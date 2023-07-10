@@ -25,12 +25,12 @@ STEP II: Run pre-processing scripts to prepare data that will be needed for mode
 All scripts are found in the folder ‘code’. The subfolder ‘code/0_functions’ contains functions that are sourced from within scripts; no need to load separately. Each of the following subfolders has a series of scripts that need to be run sequentially, as indicated by their filenames because they build on one another. We kept them separate in the event that only certain pieces might need to be updated in the future. Begin by running scripts in the 1_response_data/ folder, and then running scripts in the 2_temporal_covariates/ folder, and so on. Please scroll down to the end of this file for more information about what data are read in and written out by each script. After running scripts, there will be new directories and files in the ‘data’ and ‘plots’ folders. Some of the figures used in the paper are generated from functions called during data preparation and model fitting. Maps were produced using an external software.
 
 code/1_prepare_variables/
- 1_response_data/
- 2_temporal_covariates/
- 3_spatial_covariates/
- 4_create_fitting_dataset/
- 5_create_prediction_dataset/
- 6_covariate_evaluation/
+ * 1_response_data/
+ * 2_temporal_covariates/
+ * 3_spatial_covariates/
+ * 4_create_fitting_dataset/
+ * 5_create_prediction_dataset/
+ * 6_covariate_evaluation/
  
 --------------------------------------------------------------------------------
 
@@ -54,8 +54,8 @@ HUC_daylight_seconds.csv – day length summarized from DayMet
 STEP III: Run scripts to fit models and make predictions and summarize results.
 
 code/2_modeling/
-2.1.mod_fit_models.R – the script used to fit models using the fitting dataset prepared above. Model fit evaluation and spatial and temporal cross-validation are included here.
-2.2.mod_make_predictions.R – the script used to predict results in all unsampled locations and dates using the prediction dataset prepared above.
+* 2.1.mod_fit_models.R – the script used to fit models using the fitting dataset prepared above. Model fit evaluation and spatial and temporal cross-validation are included here.
+* 2.2.mod_make_predictions.R – the script used to predict results in all unsampled locations and dates using the prediction dataset prepared above.
 
 Results and pre-processed covariates for the Pacific Northwest are available at https://riverscapes.net/Data_Warehouses/.
 
