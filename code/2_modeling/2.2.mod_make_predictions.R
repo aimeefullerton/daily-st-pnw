@@ -24,11 +24,13 @@ COM_HUC <- data.table::fread("data/COMID_to_HUC12.csv")
 COM_HUC$Huc6 <- substr(COM_HUC$Huc12, 1, 6)
 COM_HUC$Huc10 <- substr(COM_HUC$Huc12, 1, 10)
 huclist <- sort(unique(COM_HUC$Huc6))
-huc10list <- sort(unique(COM_HUC$Huc10))
+#h <- sort(unique(COM_HUC$Huc10)) #all possible
+h <- dir(huc_path); h <- gsub("huc_", "", h); h <- gsub(".fst", "", h) #from directory (had sufficient data)
 spatial_data <- data.table::fread("data/spatial_data.csv")
 
-# To run a subset
-# huc10list <- sort(unique(COM_HUC$Huc10[COM_HUC$Huc6 == "170900"]))
+# To run a subset:
+# huc10list <- sort(unique(COM_HUC$Huc10[COM_HUC$Huc6 == "170102"]))
+# huc10list <- huc10list[grep("170102", h)]
 
 # LOAD FITTED MODELS ----
 load(paste0(models_path, "/fitted_model_full.RData"))
