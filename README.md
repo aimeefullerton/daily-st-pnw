@@ -67,7 +67,7 @@ List of scripts for preparing data and fitting stream temperature models in R. F
 
 **1_prepare_variables**
 
-**1_response_data**
+**/1_response_data**
 
 _**1.1.res_prepare_observation_data.R**_
 
@@ -81,7 +81,7 @@ WRITES:
 
 
 
-**2_temporal_covariates**
+**/2_temporal_covariates**
 
 _**1.2.1.tcov_summmarize_daily_AirT_by_reach.R**_
 
@@ -161,7 +161,7 @@ WRITES:
 * data/NWM/NWM_huc6.fst (for each of the 22 huc6 codes)
 
 
-**3_spatial_covariates**
+**/3_spatial_covariates**
 
 _**1.3.1.scov_add_NHDPlusV2.R**_
 
@@ -224,7 +224,7 @@ WRITES:
 * data/spatial_data.csv (overwrites same file)
 
 
-**4_create_fitting_dataset**
+**/4_create_fitting_dataset**
 
 _**1.4.fit_prepare_fitting_dataset.R**_
 
@@ -242,7 +242,7 @@ WRITES:
 * data/fitting_data.fst
 
 
-**5_create_prediction_dataset**
+**/5_create_prediction_dataset**
 
 _**1.5_prd_compile_dataset.R**_
 
@@ -259,7 +259,7 @@ WRITES:
 * data/huc/huc_huc10.fst (for each huc10 code)
 
 
-**6_covariate_evaluation**
+**/6_covariate_evaluation**
 
 _**1.6.1_site_characteristics_Fig3.R**_
 
