@@ -81,6 +81,7 @@ for(i in 1:length(huc10list)){
   
   # Remove really large watersheds
   huc_data <- subset(huc_data, cov.area_km2_ws < 20000)
+  if(nrow(huc_data) == 0) next
   
   # Split by hydrological region ----
   hyd_reg <- fncHydroRegion(the_data = huc_data)
