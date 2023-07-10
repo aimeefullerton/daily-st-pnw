@@ -1,0 +1,164 @@
+---
+title: "StreamCat Numpy Vectors & Process to R"
+author: "Marc Weber & Ryan Hill"
+date: "`r format(Sys.time(),  '%B %d, %Y')`"
+output: 
+  html_document:
+    theme: yeti
+    highlighted: default 
+    toc: yes
+editor_options: 
+  chunk_output_type: console
+---
+
+## Purpose
+
+* Demo reticulate to read in StreamCat numpy vectors, read into R
+* Provide initial code as guidance on how to use StreamCat vectors with local catchment summaries to produce watershed summaries
+
+## Libraries
+```{r , message=FALSE}
+library(sf)
+library(dplyr)
+library(reticulate)
+library(nhdplusTools)
+```
+
+## Read and prep data 
+
+* Read in ordered numpy vector data for region 17
+    * comids = list of local catchment IDs in the hydroregion
+    * lengths = list of number of catchments above (upstream) from each local catchment
+    * upstream = list of catchments above each catchment
+
+### Read in numpy vectors needed
+[This cheatsheet](https://cran.r-project.org/web/packages/RcppCNPy/vignettes/UsingReticulate.pdf) is helpful
+
+```{r, eval=FALSE}
+np <- import("numpy")
+streamcat_dir <- 'C:/Users/Jared.Siegel/Documents/Stream Temperature/StreamCat_Variables'
+zone <- '17'
+accum <- np$load(paste0(streamcat_dir,"/accum_",zone, ".npz"))
+accum$files
+comids <- accum$f[["comids"]] #List of all COMIDs in region 17
+lengths <- accum$f[["lengths"]] #List of how many catchments that are upstream of each comid
+upstream <- accum$f[["upstream"]] #Long list of all upstream catchments for each comid
+```
+
+### Read & prep StreamCat table (used only to develop process)
+
+* Read and use an existing StreamCat table (BFI_Region17.csv) to develop weighted mean function and looping process. Contains local catchment values (means) and areas, as well as watershed means that can be used to verify process
+
+* Create new vectors by taking local catchment summaries and reordering to match locations in vectors above
+    * locs = finds Vector addresses of where the R17 COMIDs match the upstream COMIDs (length of vector = upstream vector)
+    * comid_locs = Vector that makes sure the order of COMIDs in the comids vector is matching R17 COMIDs
+    * upstream_areas = Uses locs to replace upstream IDs with upstream local catchment areas
+    * upstream_vals = Uses locs to replace upstream IDs wtih upstream local summary values (e.g., local catchment means)
+    * comid_areas = Uses comid_locs to replace focal catchment IDs with areas from R17 table (to make sure order is correct)
+    * comid_vals = Uses comid_locs to replace focal catchment IDs with values (e.g., local catchment mean) from R17 table (to make sure order is correct)
+
+```{r, eval=FALSE}
+r17 <- read.csv('BFI_Region17.csv')
+locs <- match(upstream, r17$COMID) #Match vector addresses of catchment COMIDs to full vector of upstream catchments
+comid_locs <- match(comids, r17$COMID) #Match vector addresses from focal catchment COMIDs to table of catchment summaries
+upstream_areas <- r17$CatAreaSqKm[locs] #Use locs to replace upstream catchment IDs with catchment areas
+upstream_vals <- r17$BFICat[locs] #Use locs to replace upstream catchment IDs with catchment means
+comid_areas <- r17$CatAreaSqKm[comid_locs] #Vector of areas that match order of comids vector
+comid_vals <- r17$BFICat[comid_locs] #Vector of values that match order of cominds vector
+```
+
+## Functions for specific focal catchments
+
+* __ws_list:__ function returns a list of all COMIDs that comprise a watershed based on a given focal catchment COMID
+* __ws_mean:__ function returns watershed mean by using given local catchment means and areas as weights
+
+```{r, eval=FALSE}
+#Function to get list of COMIDs in the watershed
+ws_list <- function(comid, comids, lengths, upstream){
+  i <- grep(comid, comids) #Find comid location among comids
+  if(lengths[i] > 0){
+    start <- sum(lengths[1:i])-lengths[i]+1 #Find start point in upstream vector
+    end <- sum(lengths[1:i]) #Find end point in upstream vector
+    outws <- upstream[start:end] #Find upstream comids
+    outws <- c(comid, outws) #Add local comid to list
+  }else{
+    outws <- comid
+  }
+  return(outws)
+}
+
+#Test to see if function is working
+ws_list(24324004, comids, lengths, upstream) #Get ws list
+#Get ws list from NHDPlusTools to verify
+flowline <- navigate_nldi(list(featureSource = "comid", 
+                               featureID = 24324004), 
+                          mode = "upstreamTributaries")
+flowline
+
+#Get weighted mean
+ws_mean <- function(comid, comids, lengths, upstream_vals, upstream_areas, comid_vals, comid_areas){
+  i <- grep(comid, comids) #Find comid location among comids
+  comid_val <- comid_vals[i] #Get valu at comid
+  comid_area <- comid_areas[i] #Get area at comid
+  if(lengths[i] > 0){
+    start <- sum(lengths[1:i])-lengths[i]+1 #Find start point in upstream vecotrs
+    end <- sum(lengths[1:i]) #Find end point
+    upvals <- upstream_vals[start:end] #Grab upstream catchment values
+    upareas <- upstream_areas[start:end] #Grab upstream areas
+    wt_mean <- sum(c(comid_val, upvals) * c(comid_area, upareas)) / sum(c(comid_area, upareas))
+  }else{
+    wt_mean <- comid_val
+  }
+  return(wt_mean)
+}
+
+#Test to see if function is working
+ws_mean(24324160, comids, lengths, upstream_vals, upstream_areas, comid_vals, comid_areas)
+r17[r17$COMID == 24324160, ]
+#How many catchments included in 24324160?
+flowline <- navigate_nldi(list(featureSource = "comid", 
+                               featureID = 24324160), 
+                          mode = "upstreamTributaries")
+flowline
+```
+
+## Loop to calculate watershed means
+
+* Faster operation than using individual functions above
+
+### Notes:
+* Currently taking about 20 minutes on my laptop. Is it possible to make faster with cleaner programming or parallel processing?
+* Some minor differences detected for some watersheds. We have found that minor differences can indicate issues/problems w/ process.
+
+```{r, eval=FALSE}
+
+start_time <- Sys.time()
+outdf <- data.frame()
+for(i in 1:length(comids)){ 
+#for(i in 1:3){ 
+  comid_val <- comid_vals[i]
+  comid_area <- comid_areas[i]
+  if(lengths[i] > 0){
+    start <- sum(lengths[1:i])-lengths[i]+1
+    end <- sum(lengths[1:i])
+    upvals <- upstream_vals[start:end]
+    upareas <- upstream_areas[start:end]
+    ws_area <- sum(c(comid_area, upareas))
+    wt_mean <- sum(c(comid_val, upvals) * c(comid_area, upareas)) / ws_area
+  }else{
+    ws_area <- comid_area
+    wt_mean <- comid_val
+  }
+  outdf <- rbind(outdf, 
+                 data.frame(COMID=comids[i], WsAreaSqKm=ws_area, WsMean=wt_mean))
+}
+end_time <- Sys.time()
+print(end_time - start_time)
+
+#Verify results
+check <- merge(r17, outdf, by='COMID', all = T)
+check$diff <- check$BFIWs - check$WsMean
+print(max(check$diff, na.rm=T))
+print(min(check$diff, na.rm=T))
+
+```
