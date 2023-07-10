@@ -69,11 +69,11 @@ List of scripts for preparing data and fitting stream temperature models in R. F
 
 1.1.res_prepare_observation_data.R
 READS:
-data/response/NorWeST_ObservedStreamTempDailySummaries_OregonCoast_AllDays.txt
-data/response/NorWest_OrCoast_ObsPoints.txt (for each processing unit in: OrCoast, MidColumbia, UCYak, WaCoast, Clear, SouthCentOre, Salmon, SnakeBear, SpoKoot, MidSnake)
-data/response/NorWest_COMID_Xreference.txt
+* data/response/NorWeST_ObservedStreamTempDailySummaries_OregonCoast_AllDays.txt
+* data/response/NorWest_OrCoast_ObsPoints.txt (for each processing unit in: OrCoast, MidColumbia, UCYak, WaCoast, Clear, SouthCentOre, Salmon, SnakeBear, SpoKoot, MidSnake)
+* data/response/NorWest_COMID_Xreference.txt
 WRITES:
-data/response/NorWeST_obs.csv (1993-2013)
+* data/response/NorWeST_obs.csv (1993-2013)
 
 
 2_temporal_covariates
