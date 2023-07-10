@@ -194,7 +194,7 @@ data.table::fwrite(mat.agg, "data/temp_std.csv")
 rm(alldat, mat.std, temp.df, cov.region.f, idx)
 
 # PCA 
-pca.t <- prcomp(mat.agg[,3:8])
+pca.t <- prcomp(mat.agg[,3:7])
 summary(pca.t)
 
 eig <- pca.t$sdev^2	#to get eigenvalues, need to square the Standard Deviations
