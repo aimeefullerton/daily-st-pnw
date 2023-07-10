@@ -197,12 +197,24 @@ rm(alldat, mat.std, temp.df, cov.region.f, idx)
 pca.t <- prcomp(mat.agg[,3:7])
 summary(pca.t)
 
+#Importance of components:
+#                       PC1    PC2    PC3     PC4     PC5 
+#Standard deviation     0.4220 0.2980 0.2528 0.17222 0.1121
+#Proportion of Variance 0.4774 0.2380 0.1714 0.07951 0.0337
+#Cumulative Proportion  0.4774 0.7154 0.8868 0.96630 1.0000
+
 eig <- pca.t$sdev^2	#to get eigenvalues, need to square the Standard Deviations
 trace <- sum(eig)
 prop.var <- eig/trace
 par(mfrow = c(1,1)); screeplot(pca.t, bstick = TRUE)	#plots eigenvalues; PCs with bars overlapping line should be retained
 
 (axis.loadings <- pca.t$rotation[,1:3])
+#                     PC1          PC2         PC3
+#cov.air_temp_ws      0.4498561 -0.4036717  0.01909886
+#cov.SWE_ws          -0.6013735  0.1785455 -0.06727287
+#cov.daylength_hours -0.3032074  0.4036630  0.52205052
+#cov.NWM_flow_log    -0.2535802 -0.6528718  0.66735864
+#cov.SWE_1Apr        -0.5289062 -0.4647421 -0.52650289
 
 axis_a <- 1
 axis_b <- 2
@@ -231,3 +243,5 @@ plot(pca.t$x[,axis_a], pca.t$x[,axis_b], col = t.col[colrs.f], cex = 0.2, pch = 
 lines(pca.t_emp$PCA_1, pca.t_emp$PCA_2, col = "magenta", type  = "p", cex = 0.3, pch = 19)
 legend("topleft", legend = leglabs, col = t.col, pch = 19, bty = 'n', cex = 1.3)
 dev.off()
+
+fst::write_fst(mat.agg, "data/temporal_covars_aggregated.fst", compress = 90)
