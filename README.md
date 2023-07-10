@@ -1,4 +1,4 @@
-PNW Stream Temperature 0.1.0
+**PNW Stream Temperature 0.1.0**
 
 A statistical model predicting daily stream temperatures in Pacific Northwest USA reaches*, presented in:
 
