@@ -23,7 +23,7 @@ We used a PC with a 64-bit Windows operating system, 12 Intel and Xeon CPU cores
 
 STEP II: Run pre-processing scripts to prepare data that will be needed for modeling. 
 
-All scripts are found in the folder ‘code’. The subfolder ‘code/0_functions’ contains functions that are sourced from within scripts; no need to load separately. Each of the following subfolders has a series of scripts that need to be run sequentially, as indicated by their filenames because they build on one another. We kept them separate in the event that only certain pieces might need to be updated in the future. Begin by running scripts in the 1_response_data/ folder, and then running scripts in the 2_temporal_covariates/ folder, and so on. Please scroll down to the end of this file for more information about what data are read in and written out by each script. After running scripts, there will be new directories and files in the ‘data’ and ‘plots’ folders. Some of the figures used in the paper are generated from functions called during data preparation and model fitting. Maps were produced using an external software.
+All scripts are found in the folder ‘code’. The subfolder ‘code/0_functions’ contains functions that are sourced from within scripts; no need to load separately. Each of the following subfolders has a series of scripts that need to be run sequentially, as indicated by their filenames because they build on one another. We kept them separate in the event that only certain pieces might need to be updated in the future. Begin by running scripts in the 1_response_data/ folder, and then running scripts in the 2_temporal_covariates/ folder, and so on. Please scroll down to the end of this file for more information about what data are read in and written out by each script. After running scripts, there will be new directories and files in the ‘data’ and ‘plots’ folders. Some of the figures used in the paper are generated from functions called during data preparation and model fitting. Maps were produced using external software.
 
 code/1_prepare_variables/
  * 1_response_data/
@@ -35,16 +35,17 @@ code/1_prepare_variables/
  
 --------------------------------------------------------------------------------
 
-Data sources are cited as they are first encountered at the top of each script. All data that cannot be downloaded from the public domain is available in the ‘data’ directory of this repository. You will need to do some independent preparation of data downloaded from public sources before running these scripts, particularly if you are applying the model in a new geographic location. 
-Expected structure of the ‘data’ directory is below. This is set up already in the repository but many folders have no data as these can be obtained from public sources and are too large to store here. Additional subfolders will be created during processing. Some of the included data will need to be unzipped before use.
+Data sources are cited as they are first encountered at the top of each script. Data that cannot be downloaded from the public domain is available in the ‘data’ directory of this repository and may need to be unzipped locally. Some independent preparation of data downloaded from public sources may be necessary before running these scripts, particularly if you are applying the model in a new geographic location. 
+Expected structure of the ‘data’ directory is below.
 
-* canopy/ tree canopy cover processed from land use.
+* canopy/ tree canopy cover processed from NLCD
 * dams/  data about large dams from GRaND and National Inventory of Dams
 * nhdv2/ streamlines and attributes from National Hydrography Plus version 2
 * NWM/ stream flow predicted by NOAA’s National Water Model
 * PRISM/ gridded air temperature from PRISM
-* response/ empirical stream temperature observations provided by USFS’s NorWeST shapefiles/ some NHDPlus_v2-derived shapefiles for the Columbia River basin
-* StreamCat/ EPA’s Stream Catchment dataset
+* response/ empirical stream temperature observations provided by USFS’s NorWeST project
+* shapefiles/ NHDPlus_v2-derived shapefiles for the Columbia River basin: "Catchment.shp" (flowline reach contributing areas) and dissolved as "WBD17_outline.shp"
+* StreamCat/ EPA’s Stream Catchment dataset & accumulation script
 * SWE/ Snow-Water Equivalent data from NOAA’s National Snow and Ice Data Center
 
 * COMID_to_HUC12.csv – a cross-walk between reach and HUC identifiers for region 17
@@ -56,7 +57,7 @@ STEP III: Run scripts to fit models and make predictions and summarize results.
 
 code/2_modeling/
 * 2.1.mod_fit_models.R – the script used to fit models using the fitting dataset prepared above. Model fit evaluation and spatial and temporal cross-validation are included here.
-* 2.2.mod_make_predictions.R – the script used to predict results in all unsampled locations and dates using the prediction dataset prepared above.
+* 2.2.mod_make_predictions.R – the script used to predict results in all unsampled locations and dates using the huc-level prediction datasets prepared above.
 
 Results and pre-processed covariates for the Pacific Northwest are available at https://riverscapes.net/Data_Warehouses/.
 
