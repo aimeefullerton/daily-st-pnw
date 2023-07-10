@@ -35,7 +35,8 @@ code/1_prepare_variables/
  
 --------------------------------------------------------------------------------
 
-Data sources are cited as they are first encountered at the top of each script. Data that cannot be downloaded from the public domain is available in the ‘data’ directory of this repository and may need to be unzipped locally. Some independent preparation of data downloaded from public sources may be necessary before running these scripts, particularly if you are applying the model in a new geographic location. 
+Data sources are cited as they are first encountered at the top of each script. Data that cannot be downloaded from the public domain is available in the ‘data’ directory of this repository and may need to be unzipped locally. NOTE: There are 2 shapefiles and one accumulation script that are too big to include in this repository, even with Git LFS. We are working on options; stay tuned. Meanwhile, please contact aimee.fullerton@noaa.gov if you need more immediate access. Some independent preparation of data downloaded from public sources may be necessary before running these scripts, particularly if you are applying the model in a new geographic location. 
+
 Expected structure of the ‘data’ directory is below.
 
 * canopy/ tree canopy cover processed from NLCD
