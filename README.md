@@ -80,6 +80,7 @@ WRITES:
 * data/response/NorWeST_obs.csv (1993-2013)
 
 
+
 2_temporal_covariates
 
 1.2.1.tcov_summmarize_daily_AirT_by_reach.R
@@ -92,6 +93,7 @@ READS:
 WRITES:
 * data/PRISM/mean_AirT_yyyy.fst (1990 - 2022)
 
+
 1.2.2.tcov_summarize_daily_AirT_by_catchment.R
 
 READS:
@@ -102,6 +104,7 @@ READS:
 WRITES:
 * data/PRISM/mean_AirT_yyyy.fst (1990 - 2022; overwrites existing file)
 
+
 1.2.3.tcov_compute_daily_AirT_mov_avg_metrics.R
 
 READS:
@@ -110,6 +113,7 @@ READS:
 WRITES:
 * data/PRISM/AirT_fitting.fst
 * data/PRISM/AirT_huc6.fst (for each of the 22 huc6 codes)
+
 
 1.2.4.tcov_summarize_daily_SWE_by_reach.R
 
@@ -121,6 +125,7 @@ READS:
 
 WRITES:
 * data/SWE/mean_SWE_yyyy.fst (1990 - 2021)
+
 
 1.2.5.tcov_summarize_daily_SWE_by_catchment.R
 
@@ -134,6 +139,7 @@ WRITES:
 * data/PRISM/SWE_fitting.fst
 * data/PRISM/SWE_huc6.fst (for each of the 22 huc6 codes)
 
+
 1.2.6.tcov_compute_annual_SWE_metrics.R
 
 READS:
@@ -142,6 +148,7 @@ READS:
 
 WRITES:
 * data/SWE/SWE_annual_metrics.fst
+
 
 1.2.7.tcov_prepare_daily_NWM_flow_by_reach.R
 
@@ -168,6 +175,7 @@ READS:
 WRITES:
 * data/spatial_data.csv
 
+
 1.3.2.scov_add_StreamCat_variables.R
 
 READS:
@@ -187,6 +195,7 @@ READS:
 WRITES:
 * data/spatial_data.csv (overwrites same file)
 
+
 1.3.3.scov_add_canopy_data.R
 
 READS:
@@ -200,6 +209,7 @@ WRITES:
 * data/canopy_data.csv
 * data/spatial_data.csv (overwrites same file)
 
+
 1.3.4.scov_add_dams_data.R
 
 READS:
@@ -212,6 +222,7 @@ WRITES:
 * data/dams/dam_influenced_all.csv
 * data/dams/dam_influenced.csv
 * data/spatial_data.csv (overwrites same file)
+
 
 4_create_fitting_dataset
 
@@ -247,6 +258,7 @@ READS:
 WRITES:
 * data/huc/huc_huc10.fst (for each huc10 code)
 
+
 6_covariate_evaluation
 1.6.1_site_characteristics_Fig3.R
 
@@ -261,11 +273,13 @@ READS:
 
 1.6.3_covariate_correlations_FigS1.R
 
+
 READS:
 * data/fitting_data.fst (freeflow_data.fst)
 
 
 2_modeling
+
 2.1.mod_fit_models.R
 
 READS:
@@ -279,6 +293,7 @@ WRITES:
 * data/freeflow_Txv.fst
 * data/freeflow_Sxv.fst
 * data/freeflow_data_results_summary.csv
+
 
 2.2.mod_make_predictions.R
 
