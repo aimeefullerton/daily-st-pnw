@@ -68,10 +68,12 @@ List of scripts for preparing data and fitting stream temperature models in R. F
 1_response_data
 
 1.1.res_prepare_observation_data.R
+
 READS:
 * data/response/NorWeST_ObservedStreamTempDailySummaries_OregonCoast_AllDays.txt
 * data/response/NorWest_OrCoast_ObsPoints.txt (for each processing unit in: OrCoast, MidColumbia, UCYak, WaCoast, Clear, SouthCentOre, Salmon, SnakeBear, SpoKoot, MidSnake)
 * data/response/NorWest_COMID_Xreference.txt
+
 WRITES:
 * data/response/NorWeST_obs.csv (1993-2013)
 
@@ -79,57 +81,71 @@ WRITES:
 2_temporal_covariates
 
 1.2.1.tcov_summmarize_daily_AirT_by_reach.R
+
 READS:
 * data/shapefiles/WBD17_outline.shp
 * data/shapefiles/Catchment.shp
 * data/PRISM/PRISM_tmean_stable_4kmD2_20000101_20001231_bil/PRISM_tmean_stable_4kmD2_20000101_bil.bil
+
 WRITES:
 * data/PRISM/mean_AirT_yyyy.fst (1990 - 2022)
 
 1.2.2.tcov_summarize_daily_AirT_by_catchment.R
+
 READS:
 * data/shapefiles/Catchment.shp
 * data/StreamCat/accum_17_new.npz
 * data/PRISM/mean_AirT_yyyy.fst (1990 - 2022)
+
 WRITES:
 * data/PRISM/mean_AirT_yyyy.fst (1990 - 2022; overwrites existing file)
 
 1.2.3.tcov_compute_daily_AirT_mov_avg_metrics.R
+
 READS:
 * data/PRISM/mean_AirT_yyyy.fst (1990 - 2022)
+
 WRITES:
 * data/PRISM/AirT_fitting.fst
 * data/PRISM/AirT_huc6.fst (for each of the 22 huc6 codes)
 
 1.2.4.tcov_summarize_daily_SWE_by_reach.R
+
 READS:
 * data/shapefiles/WBD17_outline.shp
 * data/shapefiles/Catchment.shp
 * data/PRISM/PRISM_tmean_stable_4kmD2_20000101_20001231_bil/PRISM_tmean_stable_4kmD2_20000101_bil.bil
 * data/SWE/4km_SWE_Depth_WYyyyy_v01.nc (1990 - 2021)
+
 WRITES:
 * data/SWE/mean_SWE_yyyy.fst (1990 - 2021)
 
 1.2.5.tcov_summarize_daily_SWE_by_catchment.R
+
 READS:
 * data/shapefiles/Catchment.shp
 * data/StreamCat/accum_17_new.npz
 * data/SWE/mean_SWE_yyyy.fst (for all years)
+
 WRITES:
 * data/SWE/mean_SWE_yyyy.fst (1990 - 2021; overwrites existing file)
 * data/PRISM/SWE_fitting.fst
 * data/PRISM/SWE_huc6.fst (for each of the 22 huc6 codes)
 
 1.2.6.tcov_compute_annual_SWE_metrics.R
+
 READS:
 * data/SWE/mean_SWE_yyyy.fst (1990 - 2021)
 * data/shapefiles/Catchment.shp
+
 WRITES:
 * data/SWE/SWE_annual_metrics.fst
 
 1.2.7.tcov_prepare_daily_NWM_flow_by_reach.R
+
 READS:
 * data/NWM/CRB_flow_V2_yyyy.fst (1990 - 2022)
+
 WRITES:
 * data/NWM/NWM_yyyy.fst (1990 - 2022)
 * data/NWM/NWM_fitting.fst
@@ -139,16 +155,19 @@ WRITES:
 3_spatial_covariates
 
 1.3.1.scov_add_NHDPlusV2_.R
+
 READS:
 * data/nhdv2/NHDPlusPN/NHDPlus17/NHDSnapshot/Hydrography/Flowline.shp
 * data/nhdv2/NHDPlusPN/NHDPlus17/NHDPlusAttributes/PlusFlowlineVAA.dbf
 * data/nhdv2/NHDPlusPN/NHDPlus17/NHDPlusAttributes/elevslope.dbf
 * data/nhdv2/Sinuousity_CONUS/Sinuousity_CONUS.txt
 * data/nhdv2/IncrLat.txt
+
 WRITES:
 * data/spatial_data.csv
 
 1.3.2.scov_add_StreamCat_variables.R
+
 READS:
 * data/spatial_data.csv
 * data/StreamCat/BFI_region17.csv
@@ -162,26 +181,31 @@ READS:
 * data/StreamCat/Elevation_Region17.csv
 * data/StreamCat/Dams_Region17.csv	
 * data/StreamCat/Lithology_Region17.csv
+
 WRITES:
 * data/spatial_data.csv (overwrites same file)
 
 1.3.3.scov_add_canopy_data.R
+
 READS:
 * data/spatial_data.csv
 * data/shapefiles/WBD17_outline.shp
 * data/shapefiles/Catchment.shp
 * data/shapefiles/NHD_flowline_attributed.shp
 * data/StreamCat/accum_17_new.npz
+
 WRITES:
 * data/canopy_data.csv
 * data/spatial_data.csv (overwrites same file)
 
 1.3.4.scov_add_dams_data.R
+
 READS:
 * data/spatial_data.csv
 * data/nhdv2/NHDPlusPN/NHDPlus17/NHDSnapshot/Hydrography/NHDFlowline.shp
 * data/nhdv2/NHDPlusPN/NHDPlus17/NHDPlusAttributes/PlusFlowlineVAA.dbf
 * data/dams/PNW_DAMS.shp
+
 WRITES:
 * data/dams/dam_influenced_all.csv
 * data/dams/dam_influenced.csv
@@ -190,6 +214,7 @@ WRITES:
 4_create_fitting_dataset
 
 1.4.fit_prepare_fitting_dataset.R
+
 READS:
 * data/response/NorWeST_obs.csv
 * data/spatial_data.csv
@@ -199,6 +224,7 @@ READS:
 * data/SWE/SWE_fitting.fst
 * data/NWM/NWM_fitting.fst
 * data/SWE/SWE_annual_metrics.fst
+
 WRITES:
 * data/fitting_data.fst
 
@@ -206,6 +232,7 @@ WRITES:
 5_create_prediction_dataset
 
 1.5_prd_compile_dataset.R
+
 READS:
 * data/spatial_data.csv
 * data/HUC_daylight_seconds.csv
@@ -214,28 +241,34 @@ READS:
 * data/SWE/SWE_huc6.fst (for each of the 22 huc6 codes)
 * data/NWM/NWM_huc6.fst (for each of the 22 huc6 codes)
 * data/SWE/SWE_annual_metrics.csv
+
 WRITES:
 * data/huc/huc_huc10.fst (for each huc10 code)
 
 6_covariate_evaluation
 1.6.1_site_characteristics_Fig3.R
+
 READS:
 * data/fitting_data.fst (freeflow_data.fst)
 
 1.6.2_covariate_ordinations_Fig5.R
+
 READS:
 * data/fitting_data.fst (freeflow_data.fst)
 * data/huc/huc_huc10.fst
 
 1.6.3_covariate_correlations_FigS1.R
+
 READS:
 * data/fitting_data.fst (freeflow_data.fst)
 
 
 2_modeling
 2.1.mod_fit_models.R
+
 READS:
 * data/fitting_data.fst
+
 WRITES:
 * data/antec_air_temp_duration_models.RData
 * data/freeflow_data.fst
@@ -246,11 +279,13 @@ WRITES:
 * data/freeflow_data_results_summary.csv
 
 2.2.mod_make_predictions.R
+
 READS:
 * data/COMID_to_HUC12.csv
 * data/huc/huc_huc10.fst (for each huc10 code)
 * data/antec_air_temp_duration_models.RData
 * data/fitted_model.RData
+
 WRITES:
 * data/st_pred_huc10.csv (for each huc10 code)
 
