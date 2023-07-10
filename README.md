@@ -163,7 +163,7 @@ WRITES:
 
 **3_spatial_covariates**
 
-_**1.3.1.scov_add_NHDPlusV2_.R**_
+_**1.3.1.scov_add_NHDPlusV2.R**_
 
 READS:
 * data/nhdv2/NHDPlusPN/NHDPlus17/NHDSnapshot/Hydrography/Flowline.shp
