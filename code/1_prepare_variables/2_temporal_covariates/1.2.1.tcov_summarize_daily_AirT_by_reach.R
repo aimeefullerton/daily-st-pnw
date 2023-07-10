@@ -69,7 +69,7 @@ for(y in min_year:max_year){
 
   # ** Daily loop
     daily_mean_AirT <- foreach(i = 1:length(PRISM_files)) %dopar% {
-      source("code/Full_region_17/0_functions/fncSummarizeAirTDaily.R")
+      source("code/0_functions/fncSummarizeAirTDaily.R")
       fncSummarizeAirTDaily(i, filepath = paste0(prism_path, "/PRISM_tmean_stable_4kmD2_", y, "0101_", y, "1231_bil/", PRISM_files[i]), 
                           shps = list(WBD17_outline, NHDv2_polygons_small, NHDv2_polygons_large), PRISM_files)
     }

@@ -7,7 +7,7 @@ nwm_path <- "data/NWM"
 dir.create("data/huc")
 data_path <- "data/huc"
 
-source("code/Full_region_17/0_functions/fncExtractLookup.R")
+source("code/0_functions/fncExtractLookup.R")
 
 # Load data
 COM_HUC <- data.table::fread("data/COMID_to_HUC12.csv")

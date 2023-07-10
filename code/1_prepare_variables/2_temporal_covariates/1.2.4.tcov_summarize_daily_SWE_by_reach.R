@@ -68,7 +68,7 @@ for(y in min_year:max_year){
   
   # ** Daily loop ----
   daily_mean_SWE <- foreach(i = 1:366) %dopar% {
-    source("code/Full_region_17/0_functions/fncSummarizeSWEDaily.R")
+    source("code/0_functions/fncSummarizeSWEDaily.R")
     fncSummarizeSWEDaily(swe_path, i, y, shps = list(WBD17_outline, NHDv2_polygons_small, NHDv2_polygons_large))
   }
   

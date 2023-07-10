@@ -13,11 +13,11 @@ library(dplyr)
 library(mgcv)
 
 # Functions
-source("code/Full_region_17/0_functions/fncStandardizedFlow.R")
-source("code/Full_region_17/0_functions/fncHydroRegion.R")
-source("code/Full_region_17/0_functions/fncAntecedentPeriod.R")
-source("code/Full_region_17/0_functions/fncRoundLags.R")
-source("code/Full_region_17/0_functions/fncAntecedentAirTemp.R")
+source("code/0_functions/fncStandardizedFlow.R")
+source("code/0_functions/fncHydroRegion.R")
+source("code/0_functions/fncAntecedentPeriod.R")
+source("code/0_functions/fncRoundLags.R")
+source("code/0_functions/fncAntecedentAirTemp.R")
 
 # LOAD DATA ----
 COM_HUC <- data.table::fread("data/COMID_to_HUC12.csv")
