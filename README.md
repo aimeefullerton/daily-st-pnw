@@ -2,7 +2,8 @@ PNW Stream Temperature 0.1.0
 
 A statistical model predicting daily stream temperatures in Pacific Northwest USA reaches*, presented in:
 Siegel, J. E., A. H. Fullerton, A. M. FitzGerald, D. Holzer, and C. E. Jordan. 2023. Daily stream temperature predictions for free-flowing streams in the Pacific Northwest, USA.
-* reaches for hydroregion 17, as defined in the National Hydrography Dataset version 2, medium resolution
+
+*reaches for hydroregion 17, as defined in the National Hydrography Dataset version 2, medium resolution
   
 --------------------------------------------------------------------------------
 
@@ -24,12 +25,12 @@ STEP II: Run pre-processing scripts to prepare data that will be needed for mode
 All scripts are found in the folder ‘code’. The subfolder ‘code/0_functions’ contains functions that are sourced from within scripts; no need to load separately. Each of the following subfolders has a series of scripts that need to be run sequentially, as indicated by their filenames because they build on one another. We kept them separate in the event that only certain pieces might need to be updated in the future. Begin by running scripts in the 1_response_data/ folder, and then running scripts in the 2_temporal_covariates/ folder, and so on. Please scroll down to the end of this file for more information about what data are read in and written out by each script. After running scripts, there will be new directories and files in the ‘data’ and ‘plots’ folders. Some of the figures used in the paper are generated from functions called during data preparation and model fitting. Maps were produced using an external software.
 
 code/1_prepare_variables/
-	1_response_data/
-	2_temporal_covariates/
-	3_spatial_covariates/
-	4_create_fitting_dataset/
-	5_create_prediction_dataset/
-	6_covariate_evaluation/
+ 1_response_data/
+ 2_temporal_covariates/
+ 3_spatial_covariates/
+ 4_create_fitting_dataset/
+ 5_create_prediction_dataset/
+ 6_covariate_evaluation/
  
 --------------------------------------------------------------------------------
 
