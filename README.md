@@ -1,6 +1,7 @@
 PNW Stream Temperature 0.1.0
 
 A statistical model predicting daily stream temperatures in Pacific Northwest USA reaches*, presented in:
+
 Siegel, J. E., A. H. Fullerton, A. M. FitzGerald, D. Holzer, and C. E. Jordan. 2023. Daily stream temperature predictions for free-flowing streams in the Pacific Northwest, USA.
 
 *reaches for hydroregion 17, as defined in the National Hydrography Dataset version 2, medium resolution
