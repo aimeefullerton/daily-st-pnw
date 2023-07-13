@@ -1,10 +1,9 @@
 # Summarize Air Temperature (AirT, from PRISM) in upstream catchment from each reach
 
-# Scripts adapted from those used to create "_Ws" variables in EPA's StreamCat, with assistance from R. Hill & M. Weber
-  # https://www.epa.gov/national-aquatic-resource-surveys/streamcat-dataset
-  # Hill, R. A., M. H. Weber, S. G. Leibowitz, A. R. Olsen, and D. J. Thornbrugh, 2016. 
-  # The Stream-Catchment (StreamCat) Dataset:  A Database of Watershed Metrics for the Conterminous United States. 
-  # Journal of the American Water Resources Association (JAWRA) 52:120-128. DOI: 10.1111/1752-1688.12372.
+# The accumulation script used below was produced by:
+# Marc Weber, Rick Debbout, Ryan Hill, Julia Ortiz, & dthor. (2023). USEPA/StreamCat: StreamCat DOI (v.2.1). Zenodo. 
+# https://doi.org/10.5281/zenodo.8141137. See also: https://github.com/USEPA/StreamCat/blob/master/README.md
+
 
 # NOTE: better to run each year individually than to use the loop due to memory bogging
 
