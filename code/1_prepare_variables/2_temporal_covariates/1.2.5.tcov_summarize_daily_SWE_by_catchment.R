@@ -1,7 +1,7 @@
 # Summarize Snow Water Equivalent (SWE) in upstream catchment from each reach
 
 # The accumulation script used below was produced by:
-# Marc Weber, Rick Debbout, Ryan Hill, Julia Ortiz, & dthor. (2023). USEPA/StreamCat: StreamCat DOI (v.2.1). Zenodo. 
+# Marc Weber, Rick Debbout, Ryan Hill, Julia Ortiz, & Darren Thornbrugh (2023). USEPA/StreamCat: StreamCat DOI (v.2.1). Zenodo. 
 # https://doi.org/10.5281/zenodo.8141137. See also: https://github.com/USEPA/StreamCat/blob/master/README.md
 
 # NOTE: better to run each year individually than to use the loop due to memory bogging

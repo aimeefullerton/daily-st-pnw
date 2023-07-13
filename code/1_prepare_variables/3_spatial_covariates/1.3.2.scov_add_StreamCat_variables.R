@@ -5,7 +5,7 @@
   # The Stream-Catchment (StreamCat) Dataset:  A Database of Watershed Metrics for the Conterminous United States. 
   # Journal of the American Water Resources Association (JAWRA) 52:120-128. DOI: 10.1111/1752-1688.12372.
 # StreamCat scripts are available at https://github.com/USEPA/StreamCat/blob/master/README.md
-  # cited as Marc Weber, Rick Debbout, Ryan Hill, Julia Ortiz, & dthor. (2023). USEPA/StreamCat: StreamCat DOI (v.2.1). Zenodo. 
+  # cited as Marc Weber, Rick Debbout, Ryan Hill, Julia Ortiz, & Darren Thornbrugh (2023). USEPA/StreamCat: StreamCat DOI (v.2.1). Zenodo. 
   # https://doi.org/10.5281/zenodo.8141137
 # Note: we did not use this, but there is now an R interface for accessing these data: https://github.com/USEPA/StreamCatTools
 
