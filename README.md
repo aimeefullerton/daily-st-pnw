@@ -41,7 +41,7 @@ Data sources are cited as they are first encountered at the top of each script. 
 
 Data that cannot be downloaded from the public domain are available either (1) in the ‘data’ directory of this repository and may need to be unzipped locally, or (2) for those too large for Git LFS (2 shapefiles), files are provided in the location where our processed covariates and predictions are stored.
 
-Accumulation scripts used in several steps are from Marc Weber, Rick Debbout, Ryan Hill, Julia Ortiz, & dthor. (2023). USEPA/StreamCat: StreamCat DOI (v.2.1). Zenodo. https://doi.org/10.5281/zenodo.8141137. We are working on sharing the associated .npz file, stay tuned. 
+Accumulation scripts used in several steps are from Marc Weber, Rick Debbout, Ryan Hill, Julia Ortiz, & Darren Thornbrugh. (2023). USEPA/StreamCat: StreamCat DOI (v.2.1). Zenodo. https://doi.org/10.5281/zenodo.8141137. We are working on sharing the associated .npz file, stay tuned. 
 
 
 Expected structure of the ‘data’ directory is below.
