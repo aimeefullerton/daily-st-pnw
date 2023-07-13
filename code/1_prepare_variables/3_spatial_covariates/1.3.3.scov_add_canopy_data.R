@@ -4,7 +4,7 @@
 # R package version 3.0.4.9000, https://CRAN.R-project.org/package=FedData.
 
 # The accumulation script used below was produced by:
-# Marc Weber, Rick Debbout, Ryan Hill, Julia Ortiz, & Darren Thornbrugh (2023). USEPA/StreamCat: StreamCat DOI (v.2.1). Zenodo. 
+# Marc Weber, Rick Debbout, Ryan Hill & Darren Thornbrugh (2023). USEPA/StreamCat: StreamCat DOI (v.2.1). Zenodo. 
 # https://doi.org/10.5281/zenodo.8141137. See also: https://github.com/USEPA/StreamCat/blob/master/README.md
 
 
