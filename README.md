@@ -5,6 +5,8 @@ A statistical model predicting daily stream temperatures in Pacific Northwest US
 Siegel, J. E., A. H. Fullerton, A. M. FitzGerald, D. Holzer, and C. E. Jordan. 2023. Daily stream temperature predictions for free-flowing streams in the Pacific Northwest, USA.
 
 _*reaches for hydroregion 17, as defined in the National Hydrography Dataset version 2, medium resolution_
+
+Contacts: aimee.fullerton@noaa.gov & derajlegeis@gmail.com. 
   
 --------------------------------------------------------------------------------
 
@@ -35,7 +37,12 @@ code/1_prepare_variables/
  
 --------------------------------------------------------------------------------
 
-Data sources are cited as they are first encountered at the top of each script. Data that cannot be downloaded from the public domain is available in the ‘data’ directory of this repository and may need to be unzipped locally. NOTE: There are 2 shapefiles and one accumulation script that are too big to include in this repository, even with Git LFS. We are working on options; stay tuned. Meanwhile, please contact aimee.fullerton@noaa.gov if you need more immediate access. Some independent preparation of data downloaded from public sources may be necessary before running these scripts, particularly if you are applying the model in a new geographic location. 
+Data sources are cited as they are first encountered at the top of each script. Some independent preparation of data downloaded from public sources may be necessary before running these scripts, particularly if you are applying the model in a new geographic location. 
+
+Data that cannot be downloaded from the public domain are available either (1) in the ‘data’ directory of this repository and may need to be unzipped locally, or (2) for those too large for Git LFS (2 shapefiles), files are provided in the location where our processed covariates and predictions are stored.
+
+Accumulation scripts used in several steps are from Marc Weber, Rick Debbout, Ryan Hill, Julia Ortiz, & dthor. (2023). USEPA/StreamCat: StreamCat DOI (v.2.1). Zenodo. https://doi.org/10.5281/zenodo.8141137. We are working on sharing the associated .npz file, stay tuned. 
+
 
 Expected structure of the ‘data’ directory is below.
 
