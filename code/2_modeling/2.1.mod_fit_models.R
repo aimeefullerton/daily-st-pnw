@@ -6,6 +6,7 @@
 
 # Directories
 plot.dir <- "plots"
+dir.create("plots", showWarnings = F)
 plot_it <- T
 
 # Load packages
