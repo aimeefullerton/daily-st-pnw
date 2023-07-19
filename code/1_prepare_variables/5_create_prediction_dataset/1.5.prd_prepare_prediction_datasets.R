@@ -18,7 +18,7 @@ Huc_daylight <- read.csv("data/HUC_daylight_seconds.csv")
 Huc_daylight <- tidyr::gather(Huc_daylight, doy, Day_length, X001:X365, factor_key = T)
 Huc_daylight$doy <- as.numeric(substr(Huc_daylight$doy, 2, 4))
 Huc_daylight$Huc10 <- substr(Huc_daylight$HUC12, 1, 10)
-Huc_daylight$HUC_doy <- paste0(Huc_daylight$Huc10, "_", Huc_daylight$doy)
+Huc_daylight$HUC_doy <- paste0(Huc_daylight$HUC12, "_", Huc_daylight$doy)
 colnames(Huc_daylight)[colnames(Huc_daylight) == "Day_length"] <- "cov.daylength"
 
 # PROCESS BY HUC ----
@@ -43,8 +43,8 @@ for(huc in huclist){
     if(nrow(huc_data) == 0) next
     huc_data <- merge(huc_data, COM_HUC, by = "COMID", all.x = T)
     huc_data <- fncExtractLookup(huc_data); huc_data[,comid:=NULL]
-    huc_data$HUC_doy <- paste0(huc_data$Huc10, "_", as.numeric(huc_data$tim.doy))
-
+    huc_data$HUC_doy <- paste0(huc_data$Huc12, "_", ifelse(huc_data$tim.doy == 366, 365, huc_data$tim.doy ))
+    
     # ADD SWE ----
     scols <- c("lookup", "cov.SWE", "cov.SWE_ws")
     huc_data <- merge(huc_data, SWE_data[, ..scols], by = "lookup", all.x = T)
@@ -53,12 +53,8 @@ for(huc in huclist){
     huc_data <- merge(huc_data, NWM_data, by = "lookup", all.x = T)
     
     # ADD DAYLIGHT ----
-    daylight <- Huc_daylight[Huc_daylight$Huc10 == huc10, c("HUC_doy", "cov.daylength")]
-    daylight <- unique(daylight)
-    summarized_by_huc10 <- tapply(daylight$cov.daylength, daylight$HUC_doy, mean, na.rm = T)
-    daylight <- cbind.data.frame("HUC_doy" = names(summarized_by_huc10), "cov.daylength" = summarized_by_huc10)
     huc_data <- unique(huc_data)
-    huc_data <- merge(huc_data, daylight, by = "HUC_doy", all.x = T)
+    huc_data <- merge(huc_data, Huc_daylight[,c("HUC_doy", "cov.daylength")], by = "HUC_doy", all.x = T)
     huc_data$cov.daylength_hours <- huc_data$cov.daylength / 3600
     huc_data$cov.daylength[huc_data$cov.daylength < 0] <- NA
     huc_data$cov.daylength_hours[huc_data$cov.daylength_hours < 0] <- NA
