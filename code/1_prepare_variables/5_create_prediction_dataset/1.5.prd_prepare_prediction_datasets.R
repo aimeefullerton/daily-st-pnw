@@ -56,7 +56,7 @@ for(huc in huclist){
     daylight <- Huc_daylight[Huc_daylight$Huc10 == huc10, c("HUC_doy", "cov.daylength")]
     daylight <- unique(daylight)
     summarized_by_huc10 <- tapply(daylight$cov.daylength, daylight$HUC_doy, mean, na.rm = T)
-    daylight <- cbind.data.frame("HUC_doy" = unique(daylight$HUC_doy), "cov.daylength" = summarized_by_huc10)
+    daylight <- cbind.data.frame("HUC_doy" = names(summarized_by_huc10), "cov.daylength" = summarized_by_huc10)
     huc_data <- unique(huc_data)
     huc_data <- merge(huc_data, daylight, by = "HUC_doy", all.x = T)
     huc_data$cov.daylength_hours <- huc_data$cov.daylength / 3600
