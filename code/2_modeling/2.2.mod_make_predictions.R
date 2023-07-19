@@ -13,6 +13,7 @@ library(dplyr)
 library(mgcv)
 
 # Functions
+source("code/0_functions/fncFreeFlowing.R")
 source("code/0_functions/fncStandardizedFlow.R")
 source("code/0_functions/fncHydroRegion.R")
 source("code/0_functions/fncAntecedentPeriod.R")
@@ -77,6 +78,9 @@ for(i in 1:length(huc10list)){
   
   # Add area column from spatial dataset that's needed in the next step
   huc_data <- merge(huc_data, spatial_data[,c("COMID", "cov.area_km2_ws")], by = "COMID", all.x = T)
+  
+  # Subset to free-flowing reaches
+  huc_data <- fncFreeFlowing(the_data = huc_data, PDI = 0.25)
   
   # Add standardized flow
   huc_data <- fncStandardizedFlow(the_data = huc_data)
