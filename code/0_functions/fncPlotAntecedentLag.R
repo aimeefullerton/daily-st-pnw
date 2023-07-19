@@ -1,6 +1,6 @@
 # Create Plots to Evaluate Lag for Antecedent Air Temperature Covariate
 
-fncLagPlots <- function(rain_lag_model, trans_lag_model, snow_lag_model, rain_corr_categs, trans_corr_categs, snow_corr_categs,
+fncPlotAntecedentLag <- function(rain_lag_model, trans_lag_model, snow_lag_model, rain_corr_categs, trans_corr_categs, snow_corr_categs,
                         freeflow_data_rain, freeflow_data_trans, freeflow_data_snow, mod_subset_name = "full"){
   
 # Colors for plots
