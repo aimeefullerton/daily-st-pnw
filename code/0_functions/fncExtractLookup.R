@@ -5,7 +5,7 @@ fncExtractLookup <- function(the_data){
   the_data$COMID <- as.numeric(do.call(rbind, out)[,1])
   the_data$tim.year <- as.numeric(do.call(rbind, out)[,2])
   the_data$tim.doy <- as.numeric(do.call(rbind, out)[,3])
-  the_data$tim.date <- as.Date(the_data$tim.doy, origin = as.Date(paste0(the_data$tim.year, "-01-01")))
+  the_data$tim.date <- as.Date(paste(the_data$tim.doy, the_data$tim.year), format = "%j %Y")
   rm(out)
   return(the_data)
 }
