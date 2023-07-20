@@ -25,7 +25,7 @@ COM_HUC <- data.table::fread("data/COMID_to_HUC12.csv")
 COM_HUC$Huc6 <- substr(COM_HUC$Huc12, 1, 6)
 COM_HUC$Huc10 <- substr(COM_HUC$Huc12, 1, 10)
 huclist <- sort(unique(COM_HUC$Huc6))
-huc10list <- dir(huc_path); h <- gsub("huc_", "", h); h <- gsub(".fst", "", h)
+huc10list <- dir(huc_path); huc10list <- gsub("huc_", "", huc10list); huc10list <- gsub(".fst", "", huc10list)
 spatial_data <- data.table::fread("data/spatial_data.csv")
 
 # To run a subset:
@@ -76,7 +76,7 @@ for(i in 1:length(huc10list)){
   huc_data <- fst::read_fst(paste0(huc_path, "/huc_", huc10, ".fst"), as.data.table = T)
   
   # Add area column from spatial dataset that's needed in the next step
-  huc_data <- merge(huc_data, spatial_data[,c("COMID", "cov.area_km2_ws")], by = "COMID", all.x = T)
+  huc_data <- merge(huc_data, spatial_data[,c("COMID", "cov.area_km2_ws", "cov.proportion_dam_influenced")], by = "COMID", all.x = T)
   
   # Subset to free-flowing reaches
   huc_data <- fncFreeFlowing(the_data = huc_data, PDI = 0.25)
@@ -118,7 +118,7 @@ for(i in 1:length(huc10list)){
   huc_data$prd.stream_temp <- ifelse(huc_data$prd.stream_temp < 0, 0, huc_data$prd.stream_temp)
 
   # Export predictions
-  huc_data$tim.date <- as.Date(huc_data$tim.doy, origin = as.Date(paste0(huc_data$tim.year, "-01-01")))
+  huc_data$tim.date <- as.Date(paste(huc_data$tim.doy, huc_data$tim.year), format = "%j %Y")
   huc_data <- huc_data[order(huc_data$tim.date),]
   huc_data <- huc_data[, c("lookup", "COMID", "tim.date", "cov.antec_air_temp", "cov.std_mean_flow", "prd.stream_temp")]
   data.table::fwrite(huc_data, file = paste0(prediction_path, "/st_pred_", huc10, ".csv"))
