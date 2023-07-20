@@ -6,8 +6,9 @@
 
 # Directories
 plot.dir <- "plots"
-dir.create("plots", showWarnings = F)
+dir.create(plot.dir, showWarnings = F)
 plot_it <- T
+dir.create("data/results", showWarnings = F)
 
 # Load packages
 library(dplyr)
@@ -28,6 +29,8 @@ source("code/0_functions/fncPlotResidsByCovars.R")
 
 # Choose subset if applicable
 mod_subset_name <- fncChoose(choices = c("full", "season", "region", "season-region"))
+models_path <- paste0("data/results/", mod_subset_name)
+dir.create(models_path, showWarnings = F)
 
 # LOAD DATA ----
 fitting_data <- fst::read_fst("data/fitting_data.fst", as.data.table = T)
@@ -108,7 +111,7 @@ freeflow_data <- rbind(freeflow_data_rain, freeflow_data_trans, freeflow_data_sn
 
 # EXPORT DATA WITH ANTECEDENT AIR INFO & LAG MODEL ----
 ifelse(mod_subset_name == "full", subsname <- "full", subsname <- paste0(mod_subset_name, "_", ans))
-save(rain_lag_model, trans_lag_model, snow_lag_model, file = paste0("data/antec_air_temp_duration_models_", subsname, ".RData"))
+save(rain_lag_model, trans_lag_model, snow_lag_model, file = paste0(models_path, "/antec_air_temp_duration_models.RData"))
 fst::write_fst(freeflow_data, paste0("data/freeflow_data_", subsname, ".fst"), compress = 80)
 rm(freeflow_data_rain, freeflow_data_trans, freeflow_data_snow, rain_corr_categs, trans_corr_categs, snow_corr_categs,
    rain_out, trans_out, snow_out, r, t, s, rain_lag_model, trans_lag_model, snow_lag_model)
@@ -118,7 +121,7 @@ gc()
 stream_temp_model <- fncFitModel(the_data = freeflow_data)
 summary(stream_temp_model)
 sum(stream_temp_model$edf)
-save(stream_temp_model, file = paste0("data/fitted_model_", subsname, ".RData"))
+save(stream_temp_model, file = paste0(models_path, "/fitted_model.RData"))
 
 # PREDICT ----
 freeflow_data$model_pred <-  predict(stream_temp_model, newdata = freeflow_data)
