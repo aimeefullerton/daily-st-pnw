@@ -12,7 +12,7 @@ plot.dir <- "plots"
 fit.df <- fst::read_fst("data/freeflow_data.fst", as.data.table = T)
 
 scols <- c("COMID", "cov.lat_v", "cov.elev_mean_smo", "cov.area_km2_ws_log", "cov.BFI_cat", "cov.elev_diff",
-           "cov.slope", "cov.pct_wet_all_ws", "cov.pct_ice_ws", "cov.pct_for_all_cat_rip100m", "cov.canopy_line", 
+           "cov.slope", "cov.pct_wet_all_ws", "cov.pct_ow_ws", "cov.pct_ice_ws", "cov.pct_for_all_cat_rip100m", "cov.canopy_line", 
            "cov.pct_urb_all_ws", "cov.precip_cat", "cov.air_temp_range_cat", "cov.pct_extru_vol_ws")
 spat.df <- fit.df[,..scols]
 spat.std <- vegan::decostand(spat.df[,2:ncol(spat.df)], method = "rrank", MARGIN = 2, na.rm = T)
@@ -38,10 +38,9 @@ dat.std <- cbind.data.frame("COMID" = temp.df$COMID, times.df, temp.df[,tcols[-1
 dat.std <- unique(dat.std); dat.std <- dat.std[,-14]
 
 # Rename mat.std colnames for plotting
-colnames(dat.std) <- c("COMID", "year", "doy", "date", "month", "season",
-                      "Tl","Tws","Sws","DL","Qr","SA1","D","Lat","E","A","BFI","Ed","S","W","I","F","C","U","P","R","V")
+thecols <- c("Tl","Tws","Sws","DL","Qr","SA1","D","Lat","E","A","BFI","Ed","S","O", "W","I","F","C","U","P","R","V")
+colnames(dat.std) <- c("COMID", "year", "doy", "date", "month", "season", thecols)
 
-thecols <- c("Tl","Tws","Sws","DL","Qr","SA1","D","Lat","E","A","BFI","Ed","S","W","I","F","C","U","P","R","V")
 
 # Correlation plots showing values ----
 g1 <- list(
