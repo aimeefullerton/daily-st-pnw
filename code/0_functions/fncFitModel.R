@@ -20,6 +20,7 @@ model <- mgcv::gam(obs.stream_temp_daily_mean ~
                      cov.BFI_cat * cov.antec_air_temp + 
                      cov.elev_diff * cov.antec_air_temp + 
                      cov.slope * cov.antec_air_temp + 
+                     cov.pct_ow_ws * cov.antec_air_temp + 
                      cov.pct_wet_all_ws * cov.antec_air_temp +
                      cov.pct_ice_ws * cov.antec_air_temp +
                      cov.pct_for_all_cat_rip100m * cov.antec_air_temp + 
