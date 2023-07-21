@@ -89,13 +89,21 @@ g1 <- list(
     theme(legend.position  = "none", axis.text = element_text(size = 14), axis.title = element_text(size = 16), 
     plot.tag = element_text(size = 24)) +  labs(tag = "  I"),
   
+  visreg::visreg2d(the_model, x = "cov.pct_for_all_cat_rip100m", y = "cov.antec_air_temp", plot.type = "gg",
+    xlab = expression(italic("O") * " (%)"), ylab = expression(italic("Tl") * " (\u00B0C)")) +
+    scale_fill_viridis_c(limits = c(0, 19), option = "magma") +
+    geom_point(aes(cov.pct_for_all_cat_rip100m, cov.antec_air_temp), data = the_data, col = 'grey85', pch = ".") + 
+    geom_contour(aes(z = z), color = "grey40", binwidth = 1) + coord_cartesian(ylim = c(-10, 28)) +  
+    theme(legend.position  = "none", axis.text = element_text(size = 14), axis.title = element_text(size = 16), 
+    plot.tag = element_text(size = 24)) +  labs(tag = "  J"),
+  
   visreg::visreg2d(the_model, x = "tim.doy", y = "cov.SWE_1Apr", plot.type = "gg",
     xlab = expression(italic("D") * " (day of year)"), ylab = expression(italic("SA1") * " (mm)")) +
     scale_fill_viridis_c(limits = c(0, 19), option = "magma") +
     geom_point(aes(tim.doy, cov.SWE_1Apr), data = the_data, col = 'grey85', pch = ".") +
     geom_contour(aes(z = z), color = "grey40", binwidth = 1) +  coord_cartesian(ylim = c(0, 1800)) +
     theme(legend.position  = "none", axis.text = element_text(size = 14), axis.title = element_text(size = 16),
-    plot.tag = element_text(size = 24)) +  labs(tag = "  J"),
+    plot.tag = element_text(size = 24)) +  labs(tag = "  K"),
   
   visreg::visreg2d(the_model, x = "cov.elev_mean_smo", y = "cov.area_km2_ws_log", plot.type = "gg", 
     xlab = expression(italic("E") * " (m)"), ylab = expression(italic("A") * " (log(km^2))")) +
@@ -103,7 +111,7 @@ g1 <- list(
     geom_point(aes(cov.elev_mean_smo, cov.area_km2_ws_log), data = the_data, col = 'grey85', pch = ".") + 
     geom_contour(aes(z = z), color = "grey40", binwidth = 1) + coord_cartesian(xlim = c(0, 2100)) +  
     theme(legend.position  = "none", axis.text = element_text(size = 14), axis.title = element_text(size = 16),  
-    plot.tag = element_text(size = 24)) +  labs(tag = "  K"),
+    plot.tag = element_text(size = 24)) +  labs(tag = "  L"),
   
   leg
 )
@@ -112,7 +120,7 @@ png(height = 16, width = 13, units = "in", res = 400, file = paste0(plot.dir, "/
 grid.arrange(
   grobs = g1,
   widths = c(2.5, 2.5, 2.5, 0.25),
-  layout_matrix = rbind(c(1, 2, 3),
+  layout_matrix = rbind(c(1, 2, 3, 13),
                         c(4, 5, 6),
                         c(7, 8, 9), 
                         c(10, 11, 12))
@@ -130,7 +138,7 @@ g2 <- list(
     plot.tag = element_text(size = 24)) +  labs(tag = "  A"),
 
   visreg::visreg2d(the_model, x = "cov.lat_v", y = "cov.antec_air_temp", plot.type = "gg",
-    xlab = expression(italic("Latitude")), ylab = expression(italic("Tl") * " (\u00B0C)")) +
+    xlab = expression(italic("Lat")), ylab = expression(italic("Tl") * " (\u00B0C)")) +
     scale_fill_viridis_c(limits = c(0, 19), option = "magma") +
     geom_point(aes(cov.lat_v, cov.antec_air_temp), data = the_data, col = 'grey85', pch = ".") +
     geom_contour(aes(z = z), color = "grey40", binwidth = 1) + coord_cartesian(ylim = c(-10, 28)) +
@@ -138,7 +146,7 @@ g2 <- list(
     plot.tag = element_text(size = 24)) +  labs(tag = "  B"),
   
   visreg::visreg2d(the_model, x = "cov.canopy_line", y = "cov.antec_air_temp", plot.type = "gg",
-    xlab = expression(italic("C") * " (% canopy cover)"), ylab = expression(italic("Tl") * " (\u00B0C)")) +
+    xlab = expression(italic("C") * " (%)"), ylab = expression(italic("Tl") * " (\u00B0C)")) +
     scale_fill_viridis_c(limits = c(0, 19), option = "magma") +
     geom_point(aes(cov.canopy_line, cov.antec_air_temp), data = the_data, col = 'grey85', pch = ".") +
     geom_contour(aes(z = z), color = "grey40", binwidth = 1) + coord_cartesian(ylim = c(-10, 28)) +
@@ -154,7 +162,7 @@ g2 <- list(
     plot.tag = element_text(size = 24)) +  labs(tag = "  D"),
   
   visreg::visreg2d(the_model, x = "cov.pct_ice_ws", y = "cov.antec_air_temp", plot.type = "gg",
-    xlab = expression(italic("I") * " (% ice)"), ylab = expression(italic("Tl") * " (\u00B0C)")) +
+    xlab = expression(italic("I") * " (%)"), ylab = expression(italic("Tl") * " (\u00B0C)")) +
     scale_fill_viridis_c(limits = c(0, 19), option = "magma") +
     geom_point(aes(cov.pct_ice_ws, cov.antec_air_temp), data = the_data, col = 'grey85', pch = ".") +
     geom_contour(aes(z = z), color = "grey40", binwidth = 1) + coord_cartesian(xlim = c(0, 10), ylim = c(-10, 28)) +
@@ -170,7 +178,7 @@ g2 <- list(
     plot.tag = element_text(size = 24)) +  labs(tag = "  F"),
 
   visreg::visreg2d(the_model, x = "cov.pct_urb_all_ws", y = "cov.antec_air_temp", plot.type = "gg",
-    xlab = expression(italic("U") *" (% urban)"), ylab = expression(italic("Tl") * " (\u00B0C)")) +
+    xlab = expression(italic("U") *" (%)"), ylab = expression(italic("Tl") * " (\u00B0C)")) +
     scale_fill_viridis_c(limits = c(0, 19), option = "magma") +
     geom_point(aes(cov.pct_urb_all_ws, cov.antec_air_temp), data = the_data, col = 'grey85', pch = ".") +
     geom_contour(aes(z = z), color = "grey40", binwidth = 1) + coord_cartesian(ylim = c(-10, 28)) +
