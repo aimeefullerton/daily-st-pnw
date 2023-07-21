@@ -1,7 +1,7 @@
 # Create Plots to Evaluate Lag for Antecedent Air Temperature Covariate
 
 fncPlotAntecedentLag <- function(rain_lag_model, trans_lag_model, snow_lag_model, rain_corr_categs, trans_corr_categs, snow_corr_categs,
-                        freeflow_data_rain, freeflow_data_trans, freeflow_data_snow, mod_subset_name = "full"){
+                        freeflow_data_rain, freeflow_data_trans, freeflow_data_snow, subsname = "full"){
   
 # Colors for plots
 blue1 <- rgb(0, 0, 200, max = 255, alpha = 170, names = "blue50")
@@ -12,7 +12,7 @@ red1 <- rgb(200, 0, 0, max = 255, alpha = 170, names = "blue50")
 red2 <- rgb(255, 0, 0, max = 255, alpha = 50, names = "blue50")
 
 # 3- Paneled plot  
-png(height = 3.25, width = 9, units = "in", res = 400, file = paste0(plot.dir, "/Fig4_AirTlag_Stdflow_byHydroregion_", mod_subset_name, ".png"))
+png(height = 3.25, width = 9, units = "in", res = 400, file = paste0(plot.dir, "/Fig4_AirTlag_Stdflow_byHydroregion_", subsname, ".png"))
 par(mfrow = c(1,3), mar = c(4, 4, 3, 1), ps = 11, cex = 1)
 
 visreg::visreg(gam(cov.std_mean_flow ~ s(tim.doy), data = freeflow_data_rain), line = list(lty = 2, col = red1), 

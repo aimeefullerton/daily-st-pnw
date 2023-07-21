@@ -1,6 +1,6 @@
 # Produce plots of error by covariates used in the stream temperature model
 
-fncPlotResidsByCovars <- function(the_data, mod_subset_name = "full"){
+fncPlotResidsByCovars <- function(the_data, subsname = "full"){
   
   library(mgcv)
   library(visreg)
@@ -10,7 +10,7 @@ fncPlotResidsByCovars <- function(the_data, mod_subset_name = "full"){
   
   the_data$tim.month <- as.factor(the_data$tim.month)
   
-  png(height = 5,5, width = 12, units = "in", res = 400, file = paste0(plot.dir, "/Fig5_resids_vs_covariates_", mod_subset_name, ".png"))
+  png(height = 5,5, width = 12, units = "in", res = 400, file = paste0(plot.dir, "/Fig5_resids_vs_covariates_", subsname, ".png"))
   par(mfrow = c(2,4), mar = c(4,4,1,1), ps = 10, cex = 1, oma = c(0,4,0,0))
     
     # temporal
@@ -30,7 +30,7 @@ fncPlotResidsByCovars <- function(the_data, mod_subset_name = "full"){
   dev.off()
   
   
-  png(height = 12, width = 12, units = "in", res = 400, file = paste0(plot.dir, "/FigS2_resids_vs_covariates_", mod_subset_name, ".png"))
+  png(height = 12, width = 12, units = "in", res = 400, file = paste0(plot.dir, "/FigS2_resids_vs_covariates_", subsname, ".png"))
   par(mfrow = c(4,4), mar = c(4,4,1,1), ps = 10, cex = 1)
   
     # temporal

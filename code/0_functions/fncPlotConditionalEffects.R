@@ -1,6 +1,6 @@
 # Make conditional effects plots
 
-fncPlotConditionalEffects <- function(the_data, the_model, mod_subset_name = "full"){
+fncPlotConditionalEffects <- function(the_data, the_model, subsname = "full"){
 
 library(mgcv)
 library(visreg)
@@ -108,7 +108,7 @@ g1 <- list(
   leg
 )
 
-png(height = 16, width = 13, units = "in", res = 400, file = paste0(plot.dir, "/Fig7_Conditional_effects_", mod_subset_name, ".png"))
+png(height = 16, width = 13, units = "in", res = 400, file = paste0(plot.dir, "/Fig7_Conditional_effects_", subsname, ".png"))
 grid.arrange(
   grobs = g1,
   widths = c(2.5, 2.5, 2.5, 0.25),
@@ -195,7 +195,7 @@ g2 <- list(
 
   leg
 )
-png(height = 12, width = 13, units = "in", res = 400, file = paste0(plot.dir, "/FigS3_conditional_effects_", mod_subset_name, ".png"))
+png(height = 12, width = 13, units = "in", res = 400, file = paste0(plot.dir, "/FigS3_conditional_effects_", subsname, ".png"))
 grid.arrange(
   grobs = g2,
   widths = c(2.4, 2.4, 2.4, 0.5),

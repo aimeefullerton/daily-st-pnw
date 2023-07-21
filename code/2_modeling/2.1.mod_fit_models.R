@@ -1,19 +1,8 @@
 # This script fits a stream temperature model for free-flowing reaches in the PNW (region 17)
-# NOTE: there is an interactive portion for subsetting on line 28; type answer in the console when prompted.
-# If anything other than "full" is chosen, there will be another choice around line 40 
+# NOTE: if anything other than the full model is to be run, use the interactive function for subsetting on line 20; type answer in the console when prompted.
+# If anything other than "full" is chosen, there will be another choice around line 44 
 
 # SETUP ----
-
-# Directories
-plot.dir <- "plots"
-dir.create(plot.dir, showWarnings = F)
-plot_it <- T
-dir.create("data/results", showWarnings = F)
-
-# Load packages
-library(dplyr)
-library(mgcv)
-
 # Functions
 source("code/0_functions/fncChoose.R")
 source("code/0_functions/fncFreeFlowing.R")
@@ -29,8 +18,16 @@ source("code/0_functions/fncPlotResidsByCovars.R")
 
 # Choose subset if applicable
 mod_subset_name <- fncChoose(choices = c("full", "season", "region", "season-region"))
-models_path <- paste0("data/results/", mod_subset_name)
-dir.create(models_path, showWarnings = F)
+
+# Directories
+plot.dir <- "plots"
+dir.create(plot.dir, showWarnings = F)
+plot_it <- T
+dir.create("data/results", showWarnings = F)
+
+# Load packages
+library(dplyr)
+library(mgcv)
 
 # LOAD DATA ----
 fitting_data <- fst::read_fst("data/fitting_data.fst", as.data.table = T)
@@ -49,7 +46,10 @@ if(!is.null(subset_out)){
   freeflow_data <- subset_out[[ans]]
   rm(subset_out)
 }
-  
+ifelse(mod_subset_name == "full", subsname <- "full", subsname <- paste0(mod_subset_name, "_", ans))
+models_path <- paste0("data/results/", subsname)
+dir.create(models_path, showWarnings = F)
+
 # ADD STANDARDIZED FLOW ----
 freeflow_data <- fncStandardizedFlow(the_data = freeflow_data)
 
@@ -99,7 +99,7 @@ assign("snow_corr_categs", snow_out[[3]])
 
 # Plots to evaluate lags
 if(plot_it == T) fncPlotAntecedentLag(rain_lag_model, trans_lag_model, snow_lag_model, rain_corr_categs, trans_corr_categs, snow_corr_categs,
-                freeflow_data_rain, freeflow_data_trans, freeflow_data_snow, mod_subset_name)
+                freeflow_data_rain, freeflow_data_trans, freeflow_data_snow, subsname)
 
 # Predict antecedent air temperature based on optimal window durations for rain, trans, and snow subsets
 freeflow_data_rain <- fncAntecedentAirTemp(the_data = freeflow_data_rain)
@@ -110,9 +110,8 @@ freeflow_data_snow <- fncAntecedentAirTemp(the_data = freeflow_data_snow)
 freeflow_data <- rbind(freeflow_data_rain, freeflow_data_trans, freeflow_data_snow)
 
 # EXPORT DATA WITH ANTECEDENT AIR INFO & LAG MODEL ----
-ifelse(mod_subset_name == "full", subsname <- "full", subsname <- paste0(mod_subset_name, "_", ans))
 save(rain_lag_model, trans_lag_model, snow_lag_model, file = paste0(models_path, "/antec_air_temp_duration_models.RData"))
-fst::write_fst(freeflow_data, paste0("data/freeflow_data_", subsname, ".fst"), compress = 80)
+fst::write_fst(freeflow_data, paste0(models_path, "/freeflow_data.fst"), compress = 80)
 rm(freeflow_data_rain, freeflow_data_trans, freeflow_data_snow, rain_corr_categs, trans_corr_categs, snow_corr_categs,
    rain_out, trans_out, snow_out, r, t, s, rain_lag_model, trans_lag_model, snow_lag_model)
 gc()
@@ -213,7 +212,7 @@ results_summary[3,2] <- (mean((compare_monthly$resid) ^ 2, na.rm = T)) ^ .5
 results_summary[4,2] <- mean(abs(compare_monthly$resid ), na.rm = T)
 results_summary[5,2] <- nrow(freeflow_Txv)
 
-fst::write_fst(freeflow_Txv, paste0("data/freeflow_Txv_", subsname, ".fst"), compress = 100)
+fst::write_fst(freeflow_Txv, paste0(models_path, "/freeflow_Txv.fst"), compress = 100)
 
 
 # SPATIAL CROSS-VALIDATION (LOROCV; Leave One Region Out) ----
@@ -260,10 +259,10 @@ results_summary[4,3] <- mean(abs(compare_monthly$resid ), na.rm = T)
 results_summary[5,3] <- nrow(freeflow_Sxv)
 results_summary <- cbind.data.frame("Result" = row.names(results_summary), results_summary)
 
-fst::write_fst(freeflow_Sxv, paste0("data/freeflow_Sxv_", subsname, ".fst"), compress = 100)
+fst::write_fst(freeflow_Sxv, paste0(models_path, "/freeflow_Sxv.fst"), compress = 100)
 }
 
 # EXPORT FIT STATISTICS ----
-write.csv(results_summary, paste0("data/freeflow_data_results_summary_", subsname, ".csv"))
-write.csv(resid_by_site, paste0("data/resid_site_alldata_", subsname, ".csv"))
-fst::write_fst(freeflow_data, paste0("data/freeflow_data_", subsname, ".fst"), compress = 100)
+write.csv(results_summary, paste0(models_path, "/freeflow_data_results_summary.csv"))
+write.csv(resid_by_site, paste0(models_path, "/resid_site_alldata.csv"))
+fst::write_fst(freeflow_data, paste0(models_path, "/freeflow_data.fst"), compress = 100)
