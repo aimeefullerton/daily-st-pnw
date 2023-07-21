@@ -33,8 +33,8 @@ the_data <- fst::read_fst("data/freeflow_data_full.fst", as.data.table = T) #onl
 covars <- c("cov.daylength_hours", "cov.NWM_flow_log", "cov.air_temp_ws", "cov.SWE_ws", 
             "cov.SWE_1Apr", "tim.doy", "cov.SWE_mean_year",
             "cov.lat_v", "cov.elev_mean_smo", "cov.area_km2_ws_log", "cov.BFI_cat", "cov.elev_diff", "cov.slope", 
-            "cov.pct_ice_ws", "cov.pct_for_all_cat_rip100m", "cov.canopy_line", "cov.pct_urb_all_ws", "cov.pct_wet_all_ws",
-            "cov.precip_cat", "cov.air_temp_range_cat", "cov.pct_extru_vol_ws") #"cov.antec_air_temp"
+            "cov.pct_ow_ws", "cov.pct_ice_ws", "cov.pct_for_all_cat_rip100m", "cov.canopy_line", "cov.pct_urb_all_ws", 
+            "cov.pct_wet_all_ws", "cov.precip_cat", "cov.air_temp_range_cat", "cov.pct_extru_vol_ws") #"cov.antec_air_temp"
 
 grouping_vars <- c("COMID", "tim.month", "tim.year") #tim.doy is in covars above
 
