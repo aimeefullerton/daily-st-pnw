@@ -44,6 +44,7 @@ fncPlotResidsByCovars <- function(the_data, subsname = "full"){
     visreg(gam(abs(model_resid) ~ s(cov.area_km2_ws_log, k = 5) , data = the_data), ylim = c(0,3), xlim = c(0,10), ylab = ylb, xlab = "A (log(km2))")
     visreg(gam(abs(model_resid) ~ s(cov.elev_diff, k = 5) , data = the_data), ylim = c(0,3), xlim = c(0,1300), ylab = ylb, xlab = "Ed (m)")
     visreg(gam(abs(model_resid) ~ s(cov.slope, k = 5) , data = the_data), ylim = c(0,3), xlim = c(0,0.4), ylab = ylb, xlab = "S (gradient)")
+    visreg(gam(abs(model_resid) ~ s(cov.pct_ow_ws, k = 5) , data = the_data), ylim = c(0,3), ylab = ylb, xlab = "O (%)")
     visreg(gam(abs(model_resid) ~ s(cov.pct_ice_ws, k = 5) , data = the_data), ylim = c(0,3), ylab = ylb, xlab = "I (%)")
     visreg(gam(abs(model_resid) ~ s(cov.pct_for_all_cat_rip100m, k = 5) , data = the_data), ylim = c(0,3), ylab = ylb, xlab = "F (%)")
     visreg(gam(abs(model_resid) ~ s(cov.pct_urb_all_ws, k = 5) , data = the_data), ylim = c(0,3), ylab = ylb, xlab = "U (%)")
