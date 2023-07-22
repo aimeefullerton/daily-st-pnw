@@ -89,10 +89,10 @@ g1 <- list(
     theme(legend.position  = "none", axis.text = element_text(size = 14), axis.title = element_text(size = 16), 
     plot.tag = element_text(size = 24)) +  labs(tag = "  I"),
   
-  visreg::visreg2d(the_model, x = "cov.pct_for_all_cat_rip100m", y = "cov.antec_air_temp", plot.type = "gg",
+  visreg::visreg2d(the_model, x = "cov.pct_ow_ws", y = "cov.antec_air_temp", plot.type = "gg",
     xlab = expression(italic("O") * " (%)"), ylab = expression(italic("Tl") * " (\u00B0C)")) +
     scale_fill_viridis_c(limits = c(0, 19), option = "magma") +
-    geom_point(aes(cov.pct_for_all_cat_rip100m, cov.antec_air_temp), data = the_data, col = 'grey85', pch = ".") + 
+    geom_point(aes(cov.pct_ow_ws, cov.antec_air_temp), data = the_data, col = 'grey85', pch = ".") + 
     geom_contour(aes(z = z), color = "grey40", binwidth = 1) + coord_cartesian(ylim = c(-10, 28)) +  
     theme(legend.position  = "none", axis.text = element_text(size = 14), axis.title = element_text(size = 16), 
     plot.tag = element_text(size = 24)) +  labs(tag = "  J"),
@@ -119,11 +119,11 @@ g1 <- list(
 png(height = 16, width = 13, units = "in", res = 400, file = paste0(plot.dir, "/Fig7_Conditional_effects_", subsname, ".png"))
 grid.arrange(
   grobs = g1,
-  widths = c(2.5, 2.5, 2.5, 0.25),
+  widths = c(2.5, 2.5, 2.5, 0.5),
   layout_matrix = rbind(c(1, 2, 3, 13),
-                        c(4, 5, 6),
-                        c(7, 8, 9), 
-                        c(10, 11, 12))
+                        c(4, 5, 6, NA),
+                        c(7, 8, 9, NA), 
+                        c(10, 11, 12, NA))
 )
 dev.off()
 
