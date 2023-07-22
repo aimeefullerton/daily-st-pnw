@@ -28,10 +28,6 @@ huclist <- sort(unique(COM_HUC$Huc6))
 huc10list <- dir(huc_path); huc10list <- gsub("huc_", "", huc10list); huc10list <- gsub(".fst", "", huc10list)
 spatial_data <- data.table::fread("data/spatial_data.csv")
 
-# To run a subset:
-# huc10list <- sort(unique(COM_HUC$Huc10[COM_HUC$Huc6 == "170102"]))
-# huc10list <- huc10list[grep("170102", h)]
-
 # LOAD FITTED MODELS ----
 load(paste0(models_path, "/fitted_model.RData"))
 load(paste0(models_path, "/antec_air_temp_duration_models.RData"))
@@ -63,66 +59,67 @@ rm(strip_glm)
 # PREDICT ----
 start_time <- Sys.time()
 print(start_time)
-pb <- txtProgressBar(min = 1, max = length(huc10list), style = 3)
+pb <- txtProgressBar(min = 1, max = length(huclist), style = 3)
 progress <- function(n) setTxtProgressBar(pb, n)
 opts <- list(progress = progress)
 
-for(i in 1:length(huc10list)){
-  huc10 <- huc10list[i]
-  #print(huc10)
-  setTxtProgressBar(pb, i) #initialize progress bar
+for(huc in huclist){
+  huc10list <- huc10list[grep(huc, huc10list)]
+  for(i in 1:length(huc10list)){
+    huc10 <- huc10list[i]
+    setTxtProgressBar(pb, i) #initialize progress bar
+    
+    # Load pre-processed covariate data
+    huc_data <- fst::read_fst(paste0(huc_path, "/huc_", huc10, ".fst"), as.data.table = T)
+    
+    # Add area column from spatial dataset that's needed in the next step
+    huc_data <- merge(huc_data, spatial_data[,c("COMID", "cov.area_km2_ws", "cov.proportion_dam_influenced")], by = "COMID", all.x = T)
+    
+    # Subset to free-flowing reaches
+    huc_data <- fncFreeFlowing(the_data = huc_data, PDI = 0.25)
+    
+    # Add standardized flow
+    huc_data <- fncStandardizedFlow(the_data = huc_data)
+    
+    # Remove really large watersheds
+    huc_data <- subset(huc_data, cov.area_km2_ws < 20000)
+    if(nrow(huc_data) == 0) next
+    
+    # Split by hydrological region ----
+    hyd_reg <- fncHydroRegion(the_data = huc_data)
+    huc_data_rain <- hyd_reg[["rain"]]
+    huc_data_trans <- hyd_reg[["trans"]]
+    huc_data_snow <- hyd_reg[["snow"]]
+    rm(hyd_reg)
+    
+    # Predict best lag for antecedent air temperature
+    huc_data_rain$pred_lag <- predict(rain_lag_model, newdata = huc_data_rain)
+    huc_data_trans$pred_lag <- predict(trans_lag_model, newdata = huc_data_trans)
+    huc_data_snow$pred_lag <- predict(snow_lag_model, newdata = huc_data_snow)
+    huc_data_rain$pred_lag <- fncRoundLags(the_data = huc_data_rain)
+    huc_data_trans$pred_lag <- fncRoundLags(the_data = huc_data_trans)
+    huc_data_snow$pred_lag <- fncRoundLags(the_data = huc_data_snow)
+   
+    # Recombine hydroregion data subsets
+    huc_data <- rbind(huc_data_rain, huc_data_trans, huc_data_snow)
+    rm(huc_data_rain, huc_data_trans, huc_data_snow)
+    
+    # Predict antecedent air temperature based on optimal window size
+    huc_data <- fncAntecedentAirTemp(the_data = huc_data)
+    
+    # ADD SPATIAL COVARIATES ----
+    huc_data <- merge(huc_data, spatial_data, by = "COMID", all.x = T)
   
-  # Load pre-processed covariate data
-  huc_data <- fst::read_fst(paste0(huc_path, "/huc_", huc10, ".fst"), as.data.table = T)
+    # Predict ----
+    huc_data$prd.stream_temp <-  predict(stream_temp_model, newdata = huc_data)
+    huc_data$prd.stream_temp <- ifelse(huc_data$prd.stream_temp < 0, 0, huc_data$prd.stream_temp)
   
-  # Add area column from spatial dataset that's needed in the next step
-  huc_data <- merge(huc_data, spatial_data[,c("COMID", "cov.area_km2_ws", "cov.proportion_dam_influenced")], by = "COMID", all.x = T)
-  
-  # Subset to free-flowing reaches
-  huc_data <- fncFreeFlowing(the_data = huc_data, PDI = 0.25)
-  
-  # Add standardized flow
-  huc_data <- fncStandardizedFlow(the_data = huc_data)
-  
-  # Remove really large watersheds
-  huc_data <- subset(huc_data, cov.area_km2_ws < 20000)
-  if(nrow(huc_data) == 0) next
-  
-  # Split by hydrological region ----
-  hyd_reg <- fncHydroRegion(the_data = huc_data)
-  huc_data_rain <- hyd_reg[["rain"]]
-  huc_data_trans <- hyd_reg[["trans"]]
-  huc_data_snow <- hyd_reg[["snow"]]
-  rm(hyd_reg)
-  
-  # Predict best lag for antecedent air temperature
-  huc_data_rain$pred_lag <- predict(rain_lag_model, newdata = huc_data_rain)
-  huc_data_trans$pred_lag <- predict(trans_lag_model, newdata = huc_data_trans)
-  huc_data_snow$pred_lag <- predict(snow_lag_model, newdata = huc_data_snow)
-  huc_data_rain$pred_lag <- fncRoundLags(the_data = huc_data_rain)
-  huc_data_trans$pred_lag <- fncRoundLags(the_data = huc_data_trans)
-  huc_data_snow$pred_lag <- fncRoundLags(the_data = huc_data_snow)
- 
-  # Recombine hydroregion data subsets
-  huc_data <- rbind(huc_data_rain, huc_data_trans, huc_data_snow)
-  rm(huc_data_rain, huc_data_trans, huc_data_snow)
-  
-  # Predict antecedent air temperature based on optimal window size
-  huc_data <- fncAntecedentAirTemp(the_data = huc_data)
-  
-  # ADD SPATIAL COVARIATES ----
-  huc_data <- merge(huc_data, spatial_data, by = "COMID", all.x = T)
-
-  # Predict ----
-  huc_data$prd.stream_temp <-  predict(stream_temp_model, newdata = huc_data)
-  huc_data$prd.stream_temp <- ifelse(huc_data$prd.stream_temp < 0, 0, huc_data$prd.stream_temp)
-
-  # Export predictions
-  huc_data$tim.date <- as.Date(paste(huc_data$tim.doy, huc_data$tim.year), format = "%j %Y")
-  huc_data <- huc_data[order(huc_data$tim.date),]
-  huc_data <- huc_data[, c("lookup", "COMID", "tim.date", "cov.antec_air_temp", "cov.std_mean_flow", "prd.stream_temp")]
-  data.table::fwrite(huc_data, file = paste0(prediction_path, "/st_pred_", huc10, ".csv"))
+    # Export predictions
+    huc_data$tim.date <- as.Date(paste(huc_data$tim.doy, huc_data$tim.year), format = "%j %Y")
+    huc_data <- huc_data[order(huc_data$tim.date),]
+    huc_data <- huc_data[, c("lookup", "COMID", "tim.date", "cov.antec_air_temp", "cov.std_mean_flow", "prd.stream_temp")]
+    data.table::fwrite(huc_data, file = paste0(prediction_path, "/st_pred_", huc10, ".csv"))
+  }
 }
 close(pb)
 print(Sys.time() - start_time) #duration spent processing
-
