@@ -9,6 +9,7 @@ library(tidyr)
 options (future.globals.maxSize = 4000 * 1024^5)
 
 plot.dir <- "plots"
+models_path <- "data/results/full"
 
 t_col <- function(color, percent = 50, name = NULL) {
   # color = color name
@@ -27,7 +28,8 @@ t_col <- function(color, percent = 50, name = NULL) {
 
 
 # Load data
-the_data <- fst::read_fst("data/freeflow_data_full.fst", as.data.table = T) #only sites for fitting, excluding below dams
+the_data <- fst::read_fst(paste0(models_path, "/freeflow_data.fst"), as.data.table = T) #only sites for fitting, excluding below dams
+
 
 # Prepare data
 covars <- c("cov.daylength_hours", "cov.NWM_flow_log", "cov.air_temp_ws", "cov.SWE_ws", 
@@ -41,7 +43,7 @@ grouping_vars <- c("COMID", "tim.month", "tim.year") #tim.doy is in covars above
 cov.region.f <- as.numeric(as.factor(the_data$cov.NorWeST_region))
 
 tempvars <- c(covars[c(1:7)], "tim.year", "lookup")
-spatvars <- covars[c(8:21)]
+spatvars <- covars[c(8:22)]
 
 comids.emp <- unique(the_data$COMID[!is.na(the_data$obs.stream_temp_daily_mean)])
 
@@ -78,10 +80,10 @@ pca.s <- prcomp(spat.df[,2:(ncol(spat.df) - 1)])
 summary(pca.s)
 
 #Importance of components:
-#                       PC1    PC2    PC3     PC4     PC5     PC6     PC7     PC8     PC9    PC10    PC11    PC12    PC13
-#Standard deviation     0.5680 0.5100 0.4081 0.2900 0.2674 0.22915 0.19771 0.18193 0.16376 0.16042 0.14240 0.12516 0.11185 0.08758
-#Proportion of Variance 0.2835 0.2285 0.1463 0.0739 0.0628 0.04613 0.03434 0.02908 0.02356 0.02261 0.01782 0.01376 0.01099 0.00674
-#Cumulative Proportion  0.2835 0.5120 0.6583 0.7322 0.7950 0.84110 0.87545 0.90453 0.92809 0.95069 0.96851 0.98227 0.99326 1.00000
+#                       PC1    PC2    PC3     PC4     PC5     PC6     PC7     PC8     PC9    PC10    PC11    PC12   PC13    PC14
+#Standard deviation     0.5681 0.5323 0.4221 0.29233 0.26742 0.24020 0.22840 0.19426 0.17565 0.16369 0.15569 0.14117 0.1248 0.10969
+#Proportion of Variance 0.2633 0.2311 0.1454 0.06971 0.05833 0.04706 0.04255 0.03078 0.02517 0.02186 0.01977 0.01626 0.0127 0.00981
+#Cumulative Proportion  0.2633 0.4944 0.6397 0.70944 0.76778 0.81484 0.85739 0.88818 0.91334 0.93520 0.95497 0.97123 0.9839 0.99375
 
 eig <- pca.s$sdev^2	#to get eigenvalues, square the Standard Deviations
 trace <- sum(eig)
@@ -90,20 +92,21 @@ par(mfrow=c(1,1)); screeplot(pca.s, bstick = TRUE)	#plots eigenvalues; PCs with 
 
 (axis.loadings <- pca.s$rotation[,1:3])
 #                           PC1          PC2         PC3
-#cov.lat_v                   -0.29500668 -0.09667585  0.07234097
-#cov.elev_mean_smo            0.17847649  0.41187027  0.21713324
-#cov.area_km2_ws_log          0.10467673 -0.35428204  0.42861654
-#cov.BFI_cat                  0.11600072  0.26607564  0.37549273
-#cov.elev_diff               -0.06570819 -0.13393536  0.56216941
-#cov.slope                   -0.19895898  0.41388244 -0.13159363
-#cov.pct_ice_ws              -0.02685839 -0.05078195  0.14263389
-#cov.pct_for_all_cat_rip100m -0.44784762  0.22931005  0.24089843
-#cov.canopy_line             -0.47736504 -0.06094189  0.15673010
-#cov.pct_urb_all_ws          -0.08531503 -0.44082533 -0.30820794
-#cov.pct_wet_all_ws           0.04130387 -0.41704172  0.21838926
-#cov.precip_cat              -0.44215070  0.01417159  0.06029390
-#cov.air_temp_range_cat       0.42296155  0.08583366  0.19377407
-#cov.pct_extru_vol_ws         0.01602986 -0.02779313  0.05245117
+#cov.lat_v                   -0.29795976 -0.09378617  0.05165383
+#cov.elev_mean_smo            0.18697588  0.34914166  0.30090057
+#cov.area_km2_ws_log          0.09371261 -0.37451561  0.31233986
+#cov.BFI_cat                  0.11994119  0.19680196  0.41769515
+#cov.elev_diff               -0.07226735 -0.18424885  0.49056538
+#cov.slope                   -0.18728013  0.41533410 -0.04573886
+#cov.pct_ow_ws               -0.02406573 -0.33490845  0.27099172
+#cov.pct_ice_ws              -0.02970877 -0.07460575  0.13834503
+#cov.pct_for_all_cat_rip100m -0.44321010  0.20318298  0.26808034
+#cov.canopy_line             -0.47935862 -0.05661272  0.12686014
+#cov.pct_urb_all_ws          -0.09422114 -0.37189777 -0.38602243
+#cov.pct_wet_all_ws           0.02910127 -0.42361726  0.12839751
+#cov.precip_cat              -0.44219371  0.01564642  0.06357153
+#cov.air_temp_range_cat       0.42383683  0.04748822  0.19859651
+#cov.pct_extru_vol_ws         0.01471544 -0.03719882  0.05001295
 
 
 # Color by empirical data or not
