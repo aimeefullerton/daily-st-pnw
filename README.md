@@ -272,19 +272,19 @@ WRITES:
 _**1.6.1_site_characteristics_Fig3.R**_
 
 READS:
-* data/fitting_data.fst (freeflow_data.fst)
+* data/fitting_data.fst (or results/full/freeflow_data.fst)
 
 _**1.6.2_covariate_ordinations_Fig5.R**_
 
 READS:
-* data/fitting_data.fst (freeflow_data.fst)
+* data/fitting_data.fst (or results/full/freeflow_data.fst)
 * data/huc/huc_huc10.fst
 
 _**1.6.3_covariate_correlations_FigS1.R**_
 
 
 READS:
-* data/fitting_data.fst (freeflow_data.fst)
+* data/fitting_data.fst (or results/full/freeflow_data.fst)
 
 
 **2_modeling**
@@ -295,13 +295,13 @@ READS:
 * data/fitting_data.fst
 
 WRITES:
-* data/antec_air_temp_duration_models.RData
-* data/freeflow_data.fst
-* data/fitted_model.RData
-* data/freeflow_data.fst
-* data/freeflow_Txv.fst
-* data/freeflow_Sxv.fst
-* data/freeflow_data_results_summary.csv
+* data/results/full/antec_air_temp_duration_models.RData
+* data/results/full/freeflow_data.fst
+* data/results/full/fitted_model.RData
+* data/results/full/freeflow_data.fst
+* data/results/full/freeflow_Txv.fst
+* data/results/full/freeflow_Sxv.fst
+* data/results/full/freeflow_data_results_summary.csv
 
 
 _**2.2.mod_make_predictions.R**_
@@ -309,11 +309,11 @@ _**2.2.mod_make_predictions.R**_
 READS:
 * data/COMID_to_HUC12.csv
 * data/huc/huc_huc10.fst (for each huc10 code)
-* data/antec_air_temp_duration_models.RData
-* data/fitted_model.RData
+* data/results/full/antec_air_temp_duration_models.RData
+* data/results/full/fitted_model.RData
 
 WRITES:
-* data/st_pred_huc10.csv (for each huc10 code)
+* data/predictions/st_pred_huc10.csv (for each huc10 code)
 
 
 
