@@ -7,9 +7,11 @@ library(cowplot)
 
 # Local directories
 plot.dir <- "plots"
+models_path <- "data/results/full"
 
 # Load data produced in covariate ordination plot
-fit.df <- fst::read_fst("data/freeflow_data.fst", as.data.table = T)
+fit.df <- fst::read_fst(paste0(models_path, "/freeflow_data.fst"), as.data.table = T)
+
 
 scols <- c("COMID", "cov.lat_v", "cov.elev_mean_smo", "cov.area_km2_ws_log", "cov.BFI_cat", "cov.elev_diff",
            "cov.slope", "cov.pct_wet_all_ws", "cov.pct_ow_ws", "cov.pct_ice_ws", "cov.pct_for_all_cat_rip100m", "cov.canopy_line", 
@@ -38,7 +40,7 @@ dat.std <- cbind.data.frame("COMID" = temp.df$COMID, times.df, temp.df[,tcols[-1
 dat.std <- unique(dat.std); dat.std <- dat.std[,-14]
 
 # Rename mat.std colnames for plotting
-thecols <- c("Tl","Tws","Sws","DL","Qr","SA1","D","Lat","E","A","BFI","Ed","S","O", "W","I","F","C","U","P","R","V")
+thecols <- c("Tl","Tws","Sws","DL","Qr","SA1","D","Lat","E","A","BFI","Ed","S","W","O","I","F","C","U","P","R","V")
 colnames(dat.std) <- c("COMID", "year", "doy", "date", "month", "season", thecols)
 
 
@@ -55,7 +57,7 @@ cor.w  <- ggcorr(subset(dat.std, season == "winter")[,thecols], method = c("pair
 )
 #legend.position  = "none"
 
-png(height = 12, width = 12, units = "in", res = 400, file = paste0(plot.dir, "/FigS1_correl_values_", mod_subset_name, ".png"))
+png(height = 12, width = 12, units = "in", res = 400, file = paste0(plot.dir, "/FigS1_correl_values.png"))
 grid.arrange(
   grobs = g1,
   widths = c(3, 3),
