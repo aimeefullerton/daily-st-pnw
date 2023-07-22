@@ -39,9 +39,9 @@ code/1_prepare_variables/
 
 Data sources are cited as they are first encountered at the top of each script. Some independent preparation of data downloaded from public sources may be necessary before running these scripts, particularly if you are applying the model in a new geographic location. 
 
-Data that cannot be downloaded from the public domain are available either (1) in the ‘data’ directory of this repository and may need to be unzipped locally, or (2) for those too large for Git LFS (2 shapefiles), files are provided in the location where our processed covariates and predictions are stored.
+Data that cannot be downloaded from the public domain are available either (1) in the ‘data’ directory of this repository and may need to be unzipped locally, or (2) for those too large for Git LFS (2 shapefiles), files are provided in the location where our processed predictions (and eventually the processed covariates) are stored.
 
-Accumulation scripts used in several steps are from Marc Weber, Rick Debbout, Ryan Hill & Darren Thornbrugh. (2023). USEPA/StreamCat: StreamCat DOI (v.2.1). Zenodo. https://doi.org/10.5281/zenodo.8141137. The associated .npz file needed for processing some covariates is available here: https://gaftp.epa.gov/epadatacommons/ORD/NHDPlusLandscapeAttributes/NHEERL/WED/. The file needed is 'accum_17.npz'.
+Accumulation scripts used in several steps are from Marc Weber, Rick Debbout, Ryan Hill & Darren Thornbrugh. (2023). USEPA/StreamCat: StreamCat DOI (v.2.1). Zenodo. https://doi.org/10.5281/zenodo.8141137. The associated file 'accum_17.npz' needed for processing some covariates is available here: https://gaftp.epa.gov/epadatacommons/ORD/NHDPlusLandscapeAttributes/NHEERL/WED/.
 
 
 Expected structure of the ‘data’ directory is below.
