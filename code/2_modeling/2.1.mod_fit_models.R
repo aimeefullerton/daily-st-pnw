@@ -41,10 +41,8 @@ rm(fitting_data)
 # Subset to season, region, or season-region if applicable
 subset_out <- fncSubsetBy(the_data = freeflow_data, split_by = mod_subset_name, julian_day_to_split = 210)
 if(!is.null(subset_out)){
-  print(names(subset_out))
   ans<- fncChoose(choices = names(subset_out))
   freeflow_data <- subset_out[[ans]]
-  rm(subset_out)
 }
 ifelse(mod_subset_name == "full", subsname <- "full", subsname <- paste0(mod_subset_name, "_", ans))
 models_path <- paste0("data/results/", subsname)
@@ -144,7 +142,7 @@ mean(abs(subset(freeflow_data, cov.SWE_mean_year >= 20 & cov.SWE_mean_year < 100
 mean(abs(subset(freeflow_data, cov.SWE_mean_year >= 100)$model_resid), na.rm = T)
 
 # Monthly residuals; add to summary file
-freeflow_data$tim.date <- as.Date(freeflow_data$tim.doy, origin = as.Date(paste0(freeflow_data$tim.year, "-01-01")))
+freeflow_data$tim.date <- as.Date(paste(freeflow_data$tim.doy, freeflow_data$tim.year), format = "%j %Y")
 freeflow_data$tim.month <- lubridate::month(freeflow_data$tim.date)
 freeflow_data$COMID_year_month <- paste0(freeflow_data$COMID, "_", freeflow_data$tim.year, "_", freeflow_data$tim.month)
 pred_mean_monthly <- as.data.frame.table(tapply(abs(freeflow_data$model_pred), freeflow_data$COMID_year_month, mean, na.rm = T))
@@ -172,9 +170,8 @@ colnames(resid_by_site) <- c("NorWeST_ID", "mean_resid")
 # TEMPORAL CROSS-VALIDATION (LOYOCV; Leave One Year Out) ----
 
 # Initialize container dataframe
-freeflow_Txv <- freeflow_data[0,]
-freeflow_Txv$pred_Txv <- NA
 
+freeflow_Txv <- NULL
 # Loop
 for(y in 1993:2013){ #years with response data
   print(y)
@@ -219,9 +216,8 @@ fst::write_fst(freeflow_Txv, paste0(models_path, "/freeflow_Txv.fst"), compress 
 
 if(!mod_subset_name %in% c("region", "season-region")){
 # Initialize container dataframe
-freeflow_Sxv <- freeflow_data[0,]
-freeflow_Sxv$pred_Sxv <- NA
 
+freeflow_Sxv <- NULL
 # Loop
 for(r in unique(freeflow_data$cov.NorWeST_region)){
   print(r)
