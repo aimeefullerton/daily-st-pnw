@@ -67,7 +67,7 @@ code/2_modeling/
 * 2.1.mod_fit_models.R – the script used to fit models using the fitting dataset prepared above. Model fit evaluation and spatial and temporal cross-validation are included here.
 * 2.2.mod_make_predictions.R – the script used to predict results in all unsampled locations and dates using the huc-level prediction datasets prepared above.
 
-Results and pre-processed covariates for the Pacific Northwest are available at https://riverscapes.net/Data_Warehouses/.
+Results and pre-processed covariates for the Pacific Northwest are available at https://doi.org/10.5281/zenodo.8174951.
 
 --------------------------------------------------------------------------------
 
